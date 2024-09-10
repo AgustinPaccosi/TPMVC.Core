@@ -1,0 +1,27 @@
+﻿@model ColourEditViewModel
+@{
+    ViewData["Title"] = "Agregar un color";
+}
+<form method="post" asp-controller="Colours" asp-action="Edit">
+    <input type="hidden" asp-for="ColourId" />
+    <h3>Agregar un color</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="ColourName" class="form-control"></label>
+        <input asp-for="ColourName" type="text" class="form-control" />
+        <span asp-validation-for="ColourName" class="text-danger"></span>
+        <button class="btn btn-success">
+            Guardar
+        </button>
+        <a asp-controller="Colours" asp-action="Index" class="btn btn-secondary">
+            Volver a la lista
+        </a>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

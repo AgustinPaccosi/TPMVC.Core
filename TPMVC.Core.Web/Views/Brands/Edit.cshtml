@@ -1,0 +1,27 @@
+﻿@model BrandEditViewModel
+@{
+    ViewData["Title"] = "Editar una marca";
+}
+<form method="post" asp-controller="Brands" asp-action="Edit">
+    <input type="hidden" asp-for="BrandId" />
+    <h3>Editar una marca</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="BrandName" class="form-control"></label>
+        <input asp-for="BrandName" type="text" class="form-control" />
+        <span asp-validation-for="BrandName" class="text-danger"></span>
+        <button class="btn btn-primary">
+            Guardar
+        </button>
+        <a asp-controller="Brands" asp-action="Index" class="btn btn-success">
+            Volver a la lista
+        </a>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
