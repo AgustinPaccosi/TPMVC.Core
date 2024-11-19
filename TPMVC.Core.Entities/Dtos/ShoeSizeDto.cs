@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TPMVC.Core.Entities
+namespace TPMVC.Core.Entities.Dtos
 {
-    public class ShoeSize
+    public class ShoeSizeDto
     {
-        public int? ShoeSizeId { get; set; }
         public int ShoeId { get; set; }
-        public Shoe Shoe { get; set; } = null!;
         public int SizeId { get; set; }
-        public Size Size { get; set; } = null!;
+        public decimal SizeNumber { get; set; }
         public int QuantityInStock { get; set; }
-
     }
 }
