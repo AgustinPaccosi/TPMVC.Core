@@ -1,0 +1,66 @@
+﻿@model IPagedList<Genre>
+@using X.PagedList;
+@using X.Web.PagedList
+
+@{
+    ViewData["Title"] = "Genre List";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h3>Listado de Generos</h3>
+    </div>
+    <div class="col-6 text-end">
+        <a asp-controller="Genres" asp-action="Create" class="btn btn-primary">
+            Nuevo
+        </a>
+    </div>
+</div>
+<Table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Generos
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.GenreName</td>
+                    <td>
+                        <a asp-controller="Genres" asp-action="Edit" asp-route-id="@item.GenreId" class="btn btn-warning">
+                            Editar
+                        </a>
+                        <a asp-controller="Genres" asp-action="Delete" asp-route-id="@item.GenreId" class="btn btn-danger">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>No hay Generos agregados</td>
+            </tr>
+        }
+    </tbody>
+</Table>
+<div class="d-flex">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    DisplayLinkToIndividualPages = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 10
+})
+</div>

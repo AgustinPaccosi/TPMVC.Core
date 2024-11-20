@@ -1,0 +1,27 @@
+﻿@model GenreEditViewModel
+@{
+    ViewData["Title"] = "Editar un Genero";
+}
+<form method="post" asp-controller="Genres" asp-action="Edit">
+    <input type="hidden" asp-for="GenreId" />
+    <h3>Editar una marca</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="GenreName" class="form-control"></label>
+        <input asp-for="GenreName" type="text" class="form-control" />
+        <span asp-validation-for="GenreName" class="text-danger"></span>
+        <button class="btn btn-primary">
+            Guardar
+        </button>
+        <a asp-controller="Genres" asp-action="Index" class="btn btn-success">
+            Volver a la lista
+        </a>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

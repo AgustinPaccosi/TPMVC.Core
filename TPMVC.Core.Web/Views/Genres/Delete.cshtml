@@ -1,0 +1,20 @@
+﻿@model Genre
+@{
+    ViewData["Title"] = "Eliminar un Genero";
+}
+<form method="post" asp-controller="Genres" asp-action="Delete">
+    <input type="hidden" asp-for="GenreId" />
+    <h3>Eliminar una marca:</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="GenreName" class="form-control"></label>
+        <input asp-for="GenreName" disabled type="text" class="form-control" />
+        <button class="btn btn-danger">
+            Eliminar
+        </button>
+        <a asp-controller="Genres" asp-action="Index" class="btn btn-success">
+            Volver a la lista
+        </a>
+    </div>
+</form>

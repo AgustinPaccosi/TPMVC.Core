@@ -2,6 +2,7 @@
 using TPMVC.Core.Entities;
 using TPMVC.Core.Web.ViewModels.Brand;
 using TPMVC.Core.Web.ViewModels.Colour;
+using TPMVC.Core.Web.ViewModels.Genre;
 using TPMVC.Core.Web.ViewModels.Sport;
 
 namespace TPMVC.Core.Web.Mappings
@@ -13,6 +14,7 @@ namespace TPMVC.Core.Web.Mappings
             LoadBrandsMap();
             LoadColoursMap();
             LoadSportsMap();
+            LoadGenreMap();
         }
 
         private void LoadBrandsMap()
@@ -26,6 +28,10 @@ namespace TPMVC.Core.Web.Mappings
         private void LoadSportsMap()
         {
             CreateMap<Sport, SportEditViewModel>().ReverseMap();
+        }
+        private void LoadGenreMap()
+        {
+            CreateMap<Genre, GenreEditViewModel>().ReverseMap();
         }
 
     }

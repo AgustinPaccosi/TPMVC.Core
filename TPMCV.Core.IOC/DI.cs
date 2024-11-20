@@ -22,9 +22,16 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<IBrandsRepository, BrandsRepository>();
 
             servicios.AddScoped<IColoursRepository, ColoursRepository>();
-            
+
             servicios.AddScoped<ISportsRepository, SportsRepository>();
 
+            servicios.AddScoped<IGenresRepository, GenresRepository>();
+
+            servicios.AddScoped<IShoesRepository, ShoesRepository>();
+
+            servicios.AddScoped<ISizesRepository, SizesRepository>();
+
+            //SERVICIOS
 
             servicios.AddScoped<IBrandsService, BrandsService>();
 
@@ -32,6 +39,11 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<ISportsService, SportsService>();
 
+            servicios.AddScoped<IGenresService, GenresService>();
+
+            servicios.AddScoped<IShoesService, ShoesService>();
+
+            servicios.AddScoped<ISizesService, SizesService>();
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();
 
