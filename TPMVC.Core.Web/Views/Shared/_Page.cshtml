@@ -1,0 +1,19 @@
+﻿@model IPagedList
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+<div class="d-flex">
+    @Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page ,
+                searchTerm = ViewBag.currentSearchTerm,
+                pageSize = ViewBag.currentPageSize,
+                FilterBrandId = ViewBag.currentFilterBrandId
+    }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    DisplayLinkToIndividualPages = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 10
+})
+</div>

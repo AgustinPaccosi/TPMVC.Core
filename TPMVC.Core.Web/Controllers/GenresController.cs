@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using MVC.Core.Services.Interfaces;
 using TPMVC.Core.Entities;
 using TPMVC.Core.Web.ViewModels.Genre;
-using TPMVC.Core.Web.ViewModels.Genre;
 using X.PagedList.Extensions;
 
 namespace TPMVC.Core.Web.Controllers

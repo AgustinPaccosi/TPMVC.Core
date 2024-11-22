@@ -1,0 +1,135 @@
+﻿@model ShoeFilterVM
+@using TPMVC.Core.Web.ViewModels.Shoe
+@using X.PagedList
+@{
+    ViewData["Title"] = "Shoes List";
+}
+<div class="container-fluid">
+    @Html.AntiForgeryToken()
+
+    <div class="row mb-3">
+        <div class="col-6">
+            <h3 class="text-uppercase fw-bold">Shoes List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Shoes" asp-action="UpSert" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> New
+            </a>
+        </div>
+    </div>
+    <form method="get" class="form-inline" asp-action="Index">
+        <div class="d-flex flex-row align-items-center">
+            <div class="col-auto mx-1">
+                <label for="pageSize" class="mb-0">Show:</label>
+            </div>
+            <div class="col-auto mx-2">
+                <select class="form-select" id="pageSize" name="pageSize" onchange="this.form.submit()" style="width:70px">
+                    @{
+                        var options = new List<int> { 5, 10, 15, 20 };
+                        foreach (var option in options)
+                        {
+                            if (ViewBag.currentPageSize == option)
+                            {
+                                <option selected value="@option">@option</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-auto mx-2">
+                <label for="FilterBrandId" class="mb-0">Brand:</label>
+            </div>
+
+            <div class="col-auto mx-2" style="width: 200px;">
+                <select class="form-select" name="FilterBrandId" id="FilterBrandId">
+                    <option disabled selected value="0">Select Brand</option>
+                    @{
+                        foreach (var item in Model.Brands!)
+                        {
+                            if (ViewBag.currentFilterBrandId == int.Parse(item.Value))
+                            {
+                                <option selected value="@item.Value">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-auto d-flex">
+                <button type="submit" class="btn btn-primary mx-2">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                <button type="submit" class="btn btn-secondary" id="viewAll" name="viewAll" value="true">
+                    <i class="bi bi-list"></i> View All
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Shoes Table -->
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="table-light">
+            <tr>
+                <th style="width:10%">Brand</th>
+                <th style="width:10%">Sport</th>
+                <th style="width:10%">Genre</th>
+                <th style="width:10%">Colour</th>
+                <th style="width:20%">Description</th>
+                <th style="width:10%">Model</th>
+                <th style="width:10%">Price</th>
+                <th style="width:20%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Shoes!.Any())
+            {
+                foreach (var item in Model.Shoes!)
+                {
+                    <tr id="@item.ShoeId">
+                        <td>@item.BrandName</td>
+                        <td>@item.SportName</td>
+                        <td>@item.GenreName</td>
+                        <td>@item.ColourName</td>
+                        <td>@item.Description</td>
+                        <td>@item.Model</td>
+                        <td style="text-align:right">@item.Price.ToString("C2")</td>
+                        <td class="d-flex justify-content-around">
+                            <a class="btn btn-warning" asp-controller="Shoes" asp-action="UpSert" asp-route-id="@item.ShoeId">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a onclick="Delete('/Shoes/Delete/@item.ShoeId',@item.ShoeId,'@item.Model')" class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </a>
+                            <a asp-controller="Shoes" asp-action="AddSize" asp-route-id="@item.ShoeId" class="btn btn-info">
+                                <i class="bi bi-plus-circle"></i> Add Size
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center">
+                        Oops! No shoes added yet.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+     <partial name="_Page" model="@Model.Shoes" />
+ </div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/common.js"></script>
+}
