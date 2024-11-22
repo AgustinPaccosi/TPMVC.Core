@@ -169,5 +169,36 @@ namespace TPMVC.Core.Web.Controllers
             }
         }
 
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null || id == 0)
+            {
+                return NotFound();
+            }
+            Shoe? Shoe = _service?.Get(filter: g => g.ShoeId == id);
+            if (Shoe is null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                if (_service == null || _mapper == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
+                }
+                if (_service.EstaRelacionado(Shoe.ShoeId))
+                {
+                    return Json(new { success = false, message = "Related Record... Delete Deny!!" }); ;
+                }
+                _service.Eliminar(Shoe);
+                return Json(new { success = true, message = "Record successfully deleted" });
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
+            }
+        }
+
     }
 }
