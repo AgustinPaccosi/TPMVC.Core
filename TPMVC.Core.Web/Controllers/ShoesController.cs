@@ -13,27 +13,27 @@ namespace TPMVC.Core.Web.Controllers
     public class ShoesController : Controller
     {
         private readonly IShoesService? _service;
-        private readonly IBrandsService? _servicioBrand;
-        private readonly ISportsService? _servicioSport;
-        private readonly IGenresService? _servicioGenre;
-        private readonly IColoursService? _servicioColour;
-        private readonly ISizesService? _servicioSize;
-        //private readonly IServiceShoeSize? _servicioShoeSize;
+        private readonly IBrandsService? _serviceBrand;
+        private readonly ISportsService? _serviceSport;
+        private readonly IGenresService? _serviceGenre;
+        private readonly IColoursService? _serviceColour;
+        private readonly ISizesService? _serviceSize;
+        private readonly IShoesSizesService? _serviceShoeSize;
         private readonly IMapper? _mapper;
 
         public ShoesController(IShoesService? service,
             IBrandsService? servicioBrand, ISportsService? servicioSport,
             IGenresService? servicioGenre, IColoursService? servicioColour,
-            ISizesService? servicioSize//, IServiceShoeSize servicioShoeSize
+            ISizesService? servicioSize, IShoesSizesService servicioShoeSize
             , IMapper? mapper)
         {
             _service = service ?? throw new ArgumentException("Dependencies not set");
-            _servicioBrand = servicioBrand ?? throw new ArgumentNullException(nameof(servicioBrand));
-            _servicioSport = servicioSport ?? throw new ArgumentException("Dependencies not set");
-            _servicioGenre = servicioGenre ?? throw new ArgumentException("Dependencies not set");
-            _servicioColour = servicioColour ?? throw new ArgumentException("Dependencies not set");
-            _servicioSize = servicioSize ?? throw new ArgumentException("Dependencies not set");
-            //_servicioShoeSize = servicioShoeSize ?? throw new ArgumentException("Dependencies not set");
+            _serviceBrand = servicioBrand ?? throw new ArgumentNullException(nameof(servicioBrand));
+            _serviceSport = servicioSport ?? throw new ArgumentException("Dependencies not set");
+            _serviceGenre = servicioGenre ?? throw new ArgumentException("Dependencies not set");
+            _serviceColour = servicioColour ?? throw new ArgumentException("Dependencies not set");
+            _serviceSize = servicioSize ?? throw new ArgumentException("Dependencies not set");
+            _serviceShoeSize = servicioShoeSize ?? throw new ArgumentException("Dependencies not set");
             _mapper = mapper ?? throw new ArgumentException("Dependencies not set");
         }
         public IActionResult Index(int? page, int? FilterBrandId, int pageSize = 10, bool viewAll = false)
@@ -60,7 +60,7 @@ namespace TPMVC.Core.Web.Controllers
             var shoeFilterVm = new ShoeFilterVM
             {
                 Shoes = shoesVm.ToPagedList(pageNumber, pageSize),
-                Brands = _servicioBrand!.GetAll(orderBy: o => o.OrderBy(c => c.BrandName))!
+                Brands = _serviceBrand!.GetAll(orderBy: o => o.OrderBy(c => c.BrandName))!
                     .Select(c => new SelectListItem
                     {
                         Text = c.BrandName,
@@ -105,22 +105,22 @@ namespace TPMVC.Core.Web.Controllers
 
         private void CargarComboBoxs(ShoeEditVm shoeEditVm)
         {
-            shoeEditVm.Brands = _servicioBrand
+            shoeEditVm.Brands = _serviceBrand
             .GetAll(orderBy: o => o.OrderBy(c => c.BrandName))
             .Select(c => new SelectListItem
             { Text = c.BrandName, Value = c.BrandId.ToString() }).ToList();
 
-            shoeEditVm.Sports = _servicioSport
+            shoeEditVm.Sports = _serviceSport
             .GetAll(orderBy: o => o.OrderBy(c => c.SportName))
             .Select(c => new SelectListItem
             { Text = c.SportName, Value = c.SportId.ToString() }).ToList();
 
-            shoeEditVm.Genres = _servicioGenre
+            shoeEditVm.Genres = _serviceGenre
             .GetAll(orderBy: o => o.OrderBy(c => c.GenreName))
             .Select(c => new SelectListItem
             { Text = c.GenreName, Value = c.GenreId.ToString() }).ToList();
 
-            shoeEditVm.Colours = _servicioColour
+            shoeEditVm.Colours = _serviceColour
             .GetAll(orderBy: o => o.OrderBy(c => c.ColourName))
             .Select(c => new SelectListItem
             { Text = c.ColourName, Value = c.ColourId.ToString() }).ToList();
@@ -198,6 +198,106 @@ namespace TPMVC.Core.Web.Controllers
             {
                 return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
             }
+        }
+
+        public IActionResult AddSize(int id)
+        {
+            var shoe = _service!.Get(filter: s => s.ShoeId == id,
+                propertiesNames: "Brand,Genre,Colour,Sport");
+            if (shoe == null)
+            {
+                return NotFound();
+            }
+
+            var sizes = _serviceSize!
+                .GetAll(orderBy: o => o.OrderBy(s => s.SizeNumber))!
+                .Select(s => new SelectListItem
+                {
+                    Text = s.SizeNumber.ToString(),
+                    Value = s.SizeId.ToString()
+                }).ToList();
+
+            var viewModel = new ShoeSizeVm
+            {
+                ShoeId = id,
+                Brand = shoe.Brand!,
+                Colour = shoe.Colour!,
+                Genre = shoe.Genre!,
+                Sport = shoe.Sport!,
+                Sizes = sizes
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddSize(ShoeSizeVm model)
+        {
+            if (model.ShoeId <= 0 || model.SizeId <= 0 || model.Stock <= 0)
+            {
+                var shoe = _service!.Get(filter: s => s.ShoeId == model.ShoeId,
+                    propertiesNames: "Brand,Genre,Colour,Sport");
+                if (shoe == null)
+                {
+                    return NotFound();
+                }
+                model.Brand = _serviceBrand!.Get(filter: b => b.BrandId == shoe.BrandId)!;
+                model.Colour = _serviceColour!.Get(filter: c => c.ColourId == shoe.ColourId)!;
+                model.Genre = _serviceGenre!.Get(filter: g => g.GenreId == shoe.GenreId)!;
+                model.Sport = _serviceSport!.Get(filter: sp => sp.SportId == shoe.SportId)!;
+                ModelState.Remove("Brand");
+                ModelState.Remove("Colour");
+                ModelState.Remove("Genre");
+                ModelState.Remove("Sport");
+                model.Sizes = _serviceSize!
+                    .GetAll(orderBy: o => o.OrderBy(s => s.SizeNumber))!
+                    .Select(s => new SelectListItem
+                    {
+                        Text = s.SizeNumber.ToString(),
+                        Value = s.SizeId.ToString()
+                    }).ToList();
+                if (model.Stock <= 0)
+                {
+                    ModelState.AddModelError("", "Debes colocar un número de stock ");
+                }
+                if (model.SizeId <= 0)
+                {
+                    ModelState.AddModelError("", "Debes colocar un número de talle.");
+                }
+                return View(model);
+            }
+
+
+            var shoeSizeBD = _serviceShoeSize!
+                .Get(filter: ss => ss.ShoeId == model.ShoeId && ss.SizeId == model.SizeId);
+            if (shoeSizeBD != null)
+            {
+                shoeSizeBD.QuantityInStock += model.Stock;
+                _serviceShoeSize.Guardar(shoeSizeBD);
+                TempData["success"] = "Existing relation found," +
+                    " stock has been updated successfully.";
+            }
+            else
+            {
+                if (model.Stock > 0)
+                {
+                    var newShoeSize = new ShoeSize
+                    {
+                        ShoeId = model.ShoeId,
+                        SizeId = model.SizeId,
+                        QuantityInStock = model.Stock
+                    };
+                    _serviceShoeSize.Guardar(newShoeSize);
+                    TempData["success"] = "New size relation added successfully!";
+                }
+                else
+                {
+                    ModelState.AddModelError(nameof(model.Stock), "El stock debe ser mayor a 0.");
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
     }

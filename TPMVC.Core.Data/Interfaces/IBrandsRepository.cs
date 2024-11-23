@@ -12,5 +12,7 @@ namespace TPMVC.Core.Data.Interfaces
         void Editar(Brand brand);
         bool EstaRelacionado(int id);
         bool Existe(Brand brand);
+        List<Shoe> GetShoesForBrand(int brandId);
+
     }
 }

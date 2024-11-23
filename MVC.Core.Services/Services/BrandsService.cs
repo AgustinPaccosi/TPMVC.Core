@@ -74,6 +74,11 @@ namespace MVC.Core.Services.Services
             return _repository!.GetAll(filter, orderBy, propertiesNames);
         }
 
+        public List<Shoe> GetShoesForBrand(int brandId)
+        {
+            return _repository!.GetShoesForBrand(brandId);
+        }
+
         public void Guardar(Brand brand)
         {
             try

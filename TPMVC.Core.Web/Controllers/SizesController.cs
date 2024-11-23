@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Core.Services.Interfaces;
+using NuGet.Protocol.Core.Types;
 using System.Drawing.Printing;
+using System.Runtime.CompilerServices;
 using TPMVC.Core.Entities;
+using TPMVC.Core.Entities.Dtos;
+using TPMVC.Core.Web.ViewModels.Shoe;
 using TPMVC.Core.Web.ViewModels.Size;
 using X.PagedList.Extensions;
 
@@ -12,6 +16,7 @@ namespace TPMVC.Core.Web.Controllers
     {
 
         private readonly ISizesService _service;
+        private readonly IShoesSizesService _shoesSizesService;
         private readonly IMapper _mapper;
         public SizesController(ISizesService? service, IMapper? mapper)
         {
@@ -109,6 +114,9 @@ namespace TPMVC.Core.Web.Controllers
         public IActionResult Details(int id)
         {
             var shoe = _service?.GetShoesForSize(id);
+            //var ShoeSize = _shoesSizesService.Get();
+            //var shoeSizes = _shoesSizesService.GetAll();
+            //var shoeDto = MapToDtoList(shoe, shoeSizes);
             if (shoe == null || shoe.Count == 0)
             {
                 ViewData["Mensaje"] = "No hay zapatillas asociadas a este talle.";
@@ -147,6 +155,25 @@ namespace TPMVC.Core.Web.Controllers
                 return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
             }
         }
+
+        //public static List<ShoeDto> MapToDtoList(IEnumerable<Shoe> shoes, IEnumerable<ShoeSize> shoeSizes)
+        //{
+        //    return shoes.Select(shoe => new ShoeDto
+        //    {
+        //        ShoeId = shoe.ShoeId,
+        //        Brand = shoe.Brand,
+        //        Sport = shoe.Sport,
+        //        Genre = shoe.Genre,
+        //        Colour = shoe.Colour,
+        //        Model = shoe.Model,
+        //        Description = shoe.Description,
+        //        Price = shoe.Price,
+        //        // Calculamos el stock sumando los valores asociados al ShoeId
+        //        Stock = shoeSizes
+        //  .Where(size => size.ShoeId == shoe.ShoeId)
+        //  .Sum(size => size.QuantityInStock)
+        //    }).ToList();
+        //}
 
     }
 }

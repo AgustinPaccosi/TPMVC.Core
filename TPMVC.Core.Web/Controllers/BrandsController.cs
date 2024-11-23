@@ -129,6 +129,17 @@ namespace TPMVC.Core.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var shoe = _services?.GetShoesForBrand(id);
+            if (shoe == null || shoe.Count == 0)
+            {
+                ViewData["Mensaje"] = "No hay zapatillas asociadas a esta marca.";
+            }
+            return View(shoe);
+        }
+
     }
 
 }

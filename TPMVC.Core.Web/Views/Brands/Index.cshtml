@@ -41,6 +41,12 @@
                         <a asp-controller="Brands" asp-action="Delete" asp-route-id="@item.BrandId" class="btn btn-danger">
                             Eliminar
                         </a>
+                        
+                        <a class="btn btn-dark" asp-controller="Brands" asp-action="Details" asp-route-id="@item.BrandId">
+                            <i class="bi bi-pencil-square"></i>&nbsp;
+                            Detalles
+                        </a>
+
                     </td>
                 </tr>
             }

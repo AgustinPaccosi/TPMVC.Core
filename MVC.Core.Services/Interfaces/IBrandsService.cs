@@ -28,6 +28,6 @@ namespace MVC.Core.Services.Interfaces
         bool Existe(Brand brand);
 
         bool EstaRelacionado(int id);
-
+        List<Shoe> GetShoesForBrand(int brandId);
     }
 }

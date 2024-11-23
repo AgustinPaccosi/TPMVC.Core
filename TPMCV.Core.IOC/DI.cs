@@ -31,6 +31,9 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<ISizesRepository, SizesRepository>();
 
+            servicios.AddScoped<IShoesSizesRepository, ShoesSizesRepository>();
+
+
             //SERVICIOS
 
             servicios.AddScoped<IBrandsService, BrandsService>();
@@ -44,6 +47,9 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<IShoesService, ShoesService>();
 
             servicios.AddScoped<ISizesService, SizesService>();
+
+            servicios.AddScoped<IShoesSizesService, ShoesSizesService>();
+
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();
 

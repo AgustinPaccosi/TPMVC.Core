@@ -38,5 +38,16 @@ namespace TPMVC.Core.Data.Repositories
                 .Any(c => c.BrandName == brand.BrandName
                 && c.BrandId != brand.BrandId);
         }
+
+        public List<Shoe> GetShoesForBrand(int brandId)
+        {
+            return _context.Shoes
+                      .Include(s => s.Brand)
+                      .Include(s => s.Sport)
+                      .Include(s => s.Genre)
+                      .Include(s => s.Colour)
+                      .Where(s => s.BrandId == brandId)
+                      .ToList();
+        }
     }
 }
