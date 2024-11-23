@@ -55,5 +55,13 @@ namespace TPMVC.Core.Data.Repositories
                 .ToList();
 
         }
+        public int ContarZapatillasPorTalle(int sizeId)
+        {
+            return _context.ShoesSizes
+                   .Where(ss => ss.SizeId == sizeId)
+                   .Select(ss => ss.ShoeId)
+                   .Distinct()
+                   .Count();
+        }
     }
 }

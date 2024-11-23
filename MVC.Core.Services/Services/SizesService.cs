@@ -46,6 +46,10 @@ namespace MVC.Core.Services.Services
             }
         }
 
+        public int ContarZapatillasPorTalle(int sizeId)
+        {
+            return _repository!.ContarZapatillasPorTalle(sizeId);
+        }
         public bool EstaRelacionado(Size size)
         {
             try

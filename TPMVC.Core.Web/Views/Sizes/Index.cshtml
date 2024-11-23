@@ -1,0 +1,116 @@
+﻿@model IPagedList<SizeListVm>
+@using TPMVC.Core.Web.ViewModels.Size
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Size List";
+}
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h3>Size List</h3>
+
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Sizes" asp-action="UpSert" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>
+                Nuevo
+            </a>
+        </div>
+    </div>
+
+
+    <form method="get" class="form-inline" asp-action="Index">
+        <div class="d-flex flex-row align-items-center">
+            <div class="col-auto mx-1">
+                <label for="pageSize">Show:</label>
+            </div>
+            <div class="col-auto mx-2">
+                <select class="form-select" id="pageSize" name="pageSize" onchange="this.form.submit()" style="width:70px">
+                    @{
+                        var options = new List<int> { 5, 10, 15, 20 };
+                        foreach (var option in options)
+                        {
+                            if (ViewBag.currentPageSize == option)
+                            {
+                                <option selected value="@option">@option</option>
+
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+
+
+
+    <table class="table table-bordered table-hover mt-3">
+        <thead>
+            <tr>
+                <th style="width:33%">Size</th>
+                <th style="width:33%">Zapatillas por talle</th>
+                <th style="width:33%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr id="@item.SizeId">
+                        <td>
+                            @item.SizeNumber
+                        </td>
+                        <td>
+                            @item.CantidadZapatillas
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" asp-controller="Sizes" asp-action="UpSert" asp-route-id="@item.SizeId">
+                                <i class="bi bi-pencil-square"></i>&nbsp;
+                                Edit
+                            </a>
+                            <a onclick="Delete('/Sizes/Delete/@item.SizeId',@item.SizeId,'@item.SizeNumber')" class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                                Delete
+                            </a>
+                            <a class="btn btn-dark" asp-controller="Sizes" asp-action="Details" asp-route-id="@item.SizeId">
+                                <i class="bi bi-pencil-square"></i>&nbsp;
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center">
+                        F?uck!!! No categories added yet!
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <partial name="_Page" model="@Model" />
+
+
+</div>
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript"></script>
+    <script src="~/js/common.js"></script>
+}

@@ -14,5 +14,6 @@ namespace TPMVC.Core.Data.Interfaces
         bool Existe(Size size);
         int GetCantidad();
         List<Shoe>? GetShoesForSize(int sizeId);
+        int ContarZapatillasPorTalle(int sizeId);
     }
 }

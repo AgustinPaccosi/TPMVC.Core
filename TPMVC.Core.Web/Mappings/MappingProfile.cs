@@ -4,6 +4,7 @@ using TPMVC.Core.Web.ViewModels.Brand;
 using TPMVC.Core.Web.ViewModels.Colour;
 using TPMVC.Core.Web.ViewModels.Genre;
 using TPMVC.Core.Web.ViewModels.Shoe;
+using TPMVC.Core.Web.ViewModels.Size;
 using TPMVC.Core.Web.ViewModels.Sport;
 
 namespace TPMVC.Core.Web.Mappings
@@ -17,6 +18,7 @@ namespace TPMVC.Core.Web.Mappings
             LoadSportsMap();
             LoadGenreMap();
             LoadShoeMapping();
+            LoadSizeMapping();
         }
 
         private void LoadBrandsMap()
@@ -53,6 +55,12 @@ namespace TPMVC.Core.Web.Mappings
                  .ForMember(dest => dest.Model,
                  opt => opt.MapFrom(p => p.Model)).ReverseMap();
             CreateMap<Shoe, ShoeEditVm>().ReverseMap();
+        }
+
+        private void LoadSizeMapping()
+        {
+            CreateMap<Size, SizeListVm>();
+            CreateMap<Size, SizeEditVm>().ReverseMap();
         }
     }
 }
