@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,16 @@ namespace TPMVC.Core.Data.Repositories
             return _context.Sports
                 .Any(c => c.SportName == sport.SportName
                 && c.SportId != sport.SportId);
+        }
+        public List<Shoe> GetShoesForSport(int sportId)
+        {
+            return _context.Shoes
+                      .Include(s => s.Brand)
+                      .Include(s => s.Sport)
+                      .Include(s => s.Genre)
+                      .Include(s => s.Colour)
+                      .Where(s => s.SportId == sportId)
+                      .ToList();
         }
     }
 }

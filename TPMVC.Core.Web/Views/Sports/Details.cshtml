@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<Shoe>
+<div class="container">
+    <h2>Zapatillas asociadas al Deporte</h2>
+
+    @if (Model != null && Model.Count != 0)
+    {
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+                <tr>
+                    <th style="width:10%">Brand</th>
+                    <th style="width:10%">Sport</th>
+                    <th style="width:10%">Genre</th>
+                    <th style="width:10%">Colour</th>
+                    <th style="width:20%">Descripción</th>
+                    <th style="width:10%">Modelo</th>
+                    <th style="width:10%">Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var shoe in Model)
+                {
+                    <tr>
+                        <td>@shoe.Brand?.BrandName</td>
+                        <td>@shoe.Sport?.SportName</td>
+                        <td>@shoe.Genre?.GenreName</td>
+                        <td>@shoe.Colour?.ColourName</td>
+                        <td>@shoe.Description</td>
+                        <td>@shoe.Model</td>
+                        <td>@shoe.Price.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No hay zapatillas asociadas a esta marca.
+        </div>
+    }
+</div>

@@ -29,5 +29,6 @@ namespace MVC.Core.Services.Interfaces
 
         bool EstaRelacionado(int id);
 
+        public List<Shoe> GetShoesForSport(int sportId);
     }
 }

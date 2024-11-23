@@ -12,6 +12,6 @@ namespace TPMVC.Core.Data.Interfaces
         void Editar(Sport sport);
         bool EstaRelacionado(int id);
         bool Existe(Sport sport);
-
+        public List<Shoe> GetShoesForSport(int sportId);
     }
 }
