@@ -77,5 +77,24 @@ namespace MVC.Core.Services.Services
             }
         }
 
+        //public void UpdateShoeSize(ShoeSize shoeSize)
+        //{
+
+        //    try
+        //    {
+        //        _unitOfWork.BeginTransaction();
+
+        //        _repository.UpdateShoeSize(shoeSize);
+
+        //        _unitOfWork.Commit();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        _unitOfWork.RollBack();
+        //        throw;
+        //    }
+
+
+        //}
     }
 }

@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-6">
-            <h3>Size List</h3>
+            <h3>Lista de Talles</h3>
 
         </div>
         <div class="col-6 text-end">
@@ -79,15 +79,15 @@
                         <td>
                             <a class="btn btn-warning" asp-controller="Sizes" asp-action="UpSert" asp-route-id="@item.SizeId">
                                 <i class="bi bi-pencil-square"></i>&nbsp;
-                                Edit
+                                Editar
                             </a>
                             <a onclick="Delete('/Sizes/Delete/@item.SizeId',@item.SizeId,'@item.SizeNumber')" class="btn btn-danger">
                                 <i class="bi bi-trash-fill"></i>
-                                Delete
+                                Borrar
                             </a>
                             <a class="btn btn-dark" asp-controller="Sizes" asp-action="Details" asp-route-id="@item.SizeId">
                                 <i class="bi bi-pencil-square"></i>&nbsp;
-                                Details
+                                Detalles
                             </a>
                         </td>
                     </tr>
@@ -97,7 +97,7 @@
             {
                 <tr>
                     <td colspan="2" class="text-center">
-                        F?uck!!! No categories added yet!
+                        Sin talles Adheridos
                     </td>
                 </tr>
 

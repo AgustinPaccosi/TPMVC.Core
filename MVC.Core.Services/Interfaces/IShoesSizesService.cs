@@ -18,5 +18,6 @@ namespace MVC.Core.Services.Interfaces
         ShoeSize? Get(Expression<Func<ShoeSize, bool>>? filter = null,
             string? propertiesNames = null,
             bool tracked = true);
+        //void UpdateShoeSize(ShoeSize shoeSize);
     }
 }

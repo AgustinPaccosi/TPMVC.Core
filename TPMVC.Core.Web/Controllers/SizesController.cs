@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Core.Services.Interfaces;
+using MVC.Core.Services.Services;
 using NuGet.Protocol.Core.Types;
 using System.Drawing.Printing;
 using System.Runtime.CompilerServices;
@@ -181,6 +182,35 @@ namespace TPMVC.Core.Web.Controllers
         //  .Sum(size => size.QuantityInStock)
         //    }).ToList();
         //}
+        [HttpPost]
+        public IActionResult UpdateStock(int shoeId, int sizeId, int stock)
+        {
+            ShoeSize shoeSize = _shoesSizesService.Get(filter: ss => ss.ShoeId == shoeId && ss.SizeId == sizeId);
 
+            if (shoeSize != null)
+            {
+                if (stock >= 0)
+                {
+                    shoeSize.QuantityInStock = stock;
+                    _shoesSizesService.Guardar(shoeSize);
+                }
+            }
+            //else
+            //{
+            //    var size = _shoesSizesService.Get(filter: s => s.SizeNumber == sizeNumber);
+            //    shoeSize = new ShoeSize
+            //    {
+            //        ShoeId = shoeId,
+            //        SizeId = size.SizeId,
+            //        QuantityInStock = stock
+            //    };
+
+            //    _services.InsertShoeSize(shoeSize);
+
+            //}
+            return RedirectToAction("Details", new { id = sizeId });
+
+
+        }
     }
 }

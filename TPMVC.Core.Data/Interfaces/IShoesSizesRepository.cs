@@ -11,6 +11,7 @@ namespace TPMVC.Core.Data.Interfaces
     public interface IShoesSizesRepository : IGenericRepository<ShoeSize>
     {
         void Update(ShoeSize ShoeSize);
+        //void UpdateShoeSize(ShoeSize shoeSize);
     }
 
 }

@@ -20,5 +20,10 @@ namespace TPMVC.Core.Data.Repositories
         {
             _context!.ShoesSizes.Update(ShoeSize);
         }
+
+        //public void UpdateShoeSize(ShoeSize shoeSize)
+        //{
+        //    _context.ShoesSizes.Update(shoeSize);
+        //}
     }
 }

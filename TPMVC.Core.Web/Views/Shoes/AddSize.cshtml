@@ -4,7 +4,7 @@
     ViewData["Title"] = "Size Assignment";
 }
 
-<h1 class="display-4 text-center fw-bold">Size Assignment</h1>
+<h1 class="display-4 text-center fw-bold">Asignacion de Talle</h1>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -23,21 +23,21 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
-                <label asp-for="Brand.BrandName" class="form-label">Brand</label>
+                <label asp-for="Brand.BrandName" class="form-label">Marca</label>
                 <input asp-for="Brand.BrandName" type="text" class="form-control" disabled />
             </div>
             <div class="mb-3">
-                <label asp-for="Colour.ColourName" class="form-label">Colour</label>
+                <label asp-for="Colour.ColourName" class="form-label">Color</label>
                 <input asp-for="Colour.ColourName" type="text" class="form-control" disabled />
             </div>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
-                <label asp-for="Genre.GenreName" class="form-label">Genre</label>
+                <label asp-for="Genre.GenreName" class="form-label">Genero</label>
                 <input asp-for="Genre.GenreName" type="text" class="form-control" disabled />
             </div>
             <div class="mb-3">
-                <label asp-for="Sport.SportName" class="form-label">Sport</label>
+                <label asp-for="Sport.SportName" class="form-label">Deporte</label>
                 <input asp-for="Sport.SportName" type="text" class="form-control" disabled />
             </div>
         </div>
@@ -47,7 +47,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-3">
-                <label asp-for="SizeId" class="form-label">Select a Size</label>
+                <label asp-for="SizeId" class="form-label">Seleccionar Talle</label>
                 <select asp-for="SizeId" class="form-select" asp-items="Model.Sizes"></select>
                 <span asp-validation-for="SizeId" class="text-danger"></span>
             </div>
@@ -55,7 +55,7 @@
 
         <div class="col-md-6">
             <div class="mb-3">
-                <label asp-for="Stock" class="form-label">Stock Quantity</label>
+                <label asp-for="Stock" class="form-label">Cantidad de Stock</label>
                 <input asp-for="Stock" type="number" class="form-control" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
@@ -64,8 +64,8 @@
 
     <!-- Action Buttons -->
     <div class="text-center mt-3">
-        <button type="submit" class="btn btn-primary">Save Size and Stock</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <button type="submit" class="btn btn-primary">Guardar Talle y Stock</button>
+        <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
     </div>
 </form>
 

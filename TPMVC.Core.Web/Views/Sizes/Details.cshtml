@@ -9,14 +9,16 @@
         <table class="table table-bordered table-hover mt-3">
             <thead>
                 <tr>
-                    <th style="width:10%">Brand</th>
-                    <th style="width:10%">Sport</th>
-                    <th style="width:10%">Genre</th>
-                    <th style="width:10%">Colour</th>
+                    <th style="width:8%">Brand</th>
+                    <th style="width:8%">Sport</th>
+                    <th style="width:8%">Genre</th>
+                    <th style="width:8%">Colour</th>
                     <th style="width:20%">Descripción</th>
-                    <th style="width:10%">Modelo</th>
+                    <th style="width:8%">Modelo</th>
                     <th style="width:10%">Precio</th>
-                    <th style="width:10%">Stock</th> 
+                    <th style="width:10%">Stock</th>
+                    <th style="width:20%">Actualizar stock</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +32,15 @@
                         <td>@shoe.Description</td>
                         <td>@shoe.Model</td>
                         <td>@shoe.Price.ToString("C")</td>
-                        <td>@shoe.ShoesSizes.FirstOrDefault(s=>s.ShoeId==shoe.ShoeId).QuantityInStock</td>
+                        <td>@shoe.ShoesSizes.FirstOrDefault(s=>s.ShoeId==shoe.ShoeId).QuantityInStock </td>
+                        <td>
+                            <form asp-controller="Sizes" asp-action="UpdateStock" method="post" class="input-group">
+                                <input type="hidden" name="shoeId" value="@shoe.ShoeId" />
+                                <input type="hidden" name="sizeId" value="@shoe.ShoesSizes.FirstOrDefault(s=>s.ShoeId==shoe.ShoeId).SizeId" />
+                                <input type="number" id="Stock" name="stock" class="form-control"  />
+                                <button type="submit" class="btn btn-outline-primary">Actualizar</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -45,5 +55,5 @@
 </div>
 <a asp-action="Index" class="btn btn-success btn-block">
     <i class="bi bi-backspace"></i>
-    Back to List
+    Volver a la Lista
 </a>
