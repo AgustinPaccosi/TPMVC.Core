@@ -18,9 +18,10 @@ namespace TPMVC.Core.Web.Controllers
         private readonly ISizesService _service;
         private readonly IShoesSizesService _shoesSizesService;
         private readonly IMapper _mapper;
-        public SizesController(ISizesService? service, IMapper? mapper)
+        public SizesController(ISizesService? service, IMapper? mapper, IShoesSizesService serviceS)
         {
             this._service = service;
+            this._shoesSizesService = serviceS;
             _mapper = mapper;
         }
         public IActionResult Index(int? page, int pageSize = 10)
@@ -113,15 +114,21 @@ namespace TPMVC.Core.Web.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var shoe = _service?.GetShoesForSize(id);
+            var shoes = _service?.GetShoesForSize(id);
+            foreach (var shoe in shoes)
+            {
+                var shoeSizeBD = _shoesSizesService!
+                .Get(filter: ss => ss.ShoeId == shoe.ShoeId && ss.SizeId == id);
+                shoe.ShoesSizes.Add(shoeSizeBD);
+            }
             //var ShoeSize = _shoesSizesService.Get();
             //var shoeSizes = _shoesSizesService.GetAll();
             //var shoeDto = MapToDtoList(shoe, shoeSizes);
-            if (shoe == null || shoe.Count == 0)
+            if (shoes == null || shoes.Count == 0)
             {
                 ViewData["Mensaje"] = "No hay zapatillas asociadas a este talle.";
             }
-            return View(shoe);
+            return View(shoes);
         }
 
 

@@ -30,6 +30,7 @@
                         <td>@shoe.Description</td>
                         <td>@shoe.Model</td>
                         <td>@shoe.Price.ToString("C")</td>
+                        <td>@shoe.ShoesSizes.FirstOrDefault(s=>s.ShoeId==shoe.ShoeId).QuantityInStock</td>
                     </tr>
                 }
             </tbody>
