@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using TPMVC.Core.Entities;
 
 namespace TPMVC.Core.Data
 {
-    public partial class Context : DbContext
+    public partial class Context : IdentityDbContext<IdentityUser>
     {
         public Context()
         {
@@ -175,6 +177,47 @@ namespace TPMVC.Core.Data
                     Active = true
                 },
             };
+            modelBuilder.Entity<IdentityUserLogin<string>>()
+                   .HasKey(login => new { login.LoginProvider, login.ProviderKey });
+            //LoginProvider: Es un identificador del proveedor externo de inicio de sesión (por ejemplo, "Google", "Facebook", o "Microsoft")
+            //ProviderKey: Es el identificador único que el proveedor externo utiliza para identificar al usuario. Por ejemplo:
+            //En el caso de Google, esto sería el ID único del usuario en Google.
+            //En el caso de Facebook, sería el ID único del usuario en Facebook.
+
+            //La combinación de estas dos propiedades es única por cada inicio de sesión externo. Al usarlas como clave primaria compuesta:
+            //Garantizamos unicidad: Evitamos duplicados en la tabla AspNetUserLogins. Por ejemplo, el mismo usuario no debería tener dos entradas con el mismo LoginProvider y ProviderKey.
+            //Facilitamos consultas rápidas: ASP.NET Identity necesita buscar rápidamente si un usuario ya tiene un inicio de sesión externo registrado.
+            //Es una convención estándar: Esta estructura ya está definida por diseño en ASP.NET Identity y es consistente con las mejores prácticas.
+
+
+
+
+            // Configurar la clave primaria compuesta de IdentityUserRole
+            modelBuilder.Entity<IdentityUserRole<string>>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId }); // Clave primaria compuesta
+            });
+            //Usando las propiedades UserId y RoleId. Esto asegura que:
+            //Un mismo usuario no pueda estar en el mismo rol más de una vez.
+            //El sistema pueda buscar y eliminar relaciones de usuario - rol de manera eficiente
+
+
+            //IdentityUserToken<string> Sirve para crear tokens personalizados
+            //Un token es un valor que puede representar información sobre un usuario o proporcionar acceso temporal a ciertos recursos.
+            //Ejemplos comunes:
+            //Tokens para autenticación persistente(como cookies o JWT).
+            //Tokens para reiniciar contraseñas o realizar verificaciones de correo electrónico.
+            //Tokens de integración con otros servicios(como OAuth o API externas).
+            modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name }); // Clave primaria compuesta
+            });
+            //UserId: Un usuario puede tener varios tokens, pero cada token pertenece a un usuario específico.
+            //LoginProvider: Permite distinguir tokens emitidos por diferentes proveedores(como Google, Facebook, etc.).
+            //Name: Permite que un mismo proveedor emita diferentes tipos de tokens para el mismo usuario(como AccessToken y RefreshToken).
+            //Con esta combinación, el sistema asegura que:
+            //No existan tokens duplicados para un mismo usuario, proveedor y nombre.
+            //Se pueda identificar y eliminar un token específico de forma eficiente
 
             modelBuilder.Entity<Brand>(entity =>
             {

@@ -2,18 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using MVC.Core.Services.Interfaces;
 using TPMVC.Core.Entities;
-using TPMVC.Core.Web.ViewModels.Sport;
+using TPMVC.Core.Web.ViewModels.Colour;
 using X.PagedList.Extensions;
 
-namespace TPMVC.Core.Web.Controllers
+namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
-    public class SportsController : Controller
+    [Area("Admin")]
+    public class ColoursController : Controller
     {
-        private readonly ISportsService? _services;
+        private readonly IColoursService? _services;
 
         private readonly IMapper? _mapper;
 
-        public SportsController(ISportsService? services, IMapper mapper)
+        public ColoursController(IColoursService? services, IMapper mapper)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -33,24 +34,24 @@ namespace TPMVC.Core.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(SportEditViewModel sportVM)
+        public IActionResult Create(ColourEditViewModel colourVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(sportVM);
+                return View(colourVM);
             }
-            Sport sport = _mapper.Map<Sport>(sportVM);
-            if (sport is null)
+            Colour colour = _mapper.Map<Colour>(colourVM);
+            if (colour is null)
             {
-                ModelState.AddModelError(string.Empty, "Deporte es nulo");
-                return View(sportVM);
+                ModelState.AddModelError(string.Empty, "Color es nulo");
+                return View(colourVM);
             }
-            if (_services.Existe(sport))
+            if (_services.Existe(colour))
             {
                 ModelState.AddModelError(string.Empty, "El registro ya existe");
-                return View(sportVM);
+                return View(colourVM);
             }
-            _services.Guardar(sport);
+            _services.Guardar(colour);
             TempData["success"] = "Registro agregado satisfactoriamente";
             return RedirectToAction("Index");
         }
@@ -61,34 +62,34 @@ namespace TPMVC.Core.Web.Controllers
             {
                 return NotFound();
             }
-            Sport sport = _services.Get(filter: c => c.SportId == id);
-            if (sport is null)
+            Colour colour = _services.Get(filter: c => c.ColourId == id);
+            if (colour is null)
             {
                 return NotFound();
             }
-            SportEditViewModel sportVM = _mapper.Map<SportEditViewModel>(sport);
-            return View(sportVM);
+            ColourEditViewModel colourVM = _mapper.Map<ColourEditViewModel>(colour);
+            return View(colourVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(SportEditViewModel sportVM)
+        public IActionResult Edit(ColourEditViewModel colourVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(sportVM);
+                return View(colourVM);
             }
-            Sport sport = _mapper.Map<Sport>(sportVM);
-            if (sport is null)
+            Colour colour = _mapper.Map<Colour>(colourVM);
+            if (colour is null)
             {
-                ModelState.AddModelError(string.Empty, "Deporte es nula");
-                return View(sportVM);
+                ModelState.AddModelError(string.Empty, "Color es nulo");
+                return View(colourVM);
             }
-            if (_services.Existe(sport))
+            if (_services.Existe(colour))
             {
                 ModelState.AddModelError(string.Empty, "El registro ya existe");
-                return View(sportVM);
+                return View(colourVM);
             }
-            _services.Guardar(sport);
+            _services.Guardar(colour);
             TempData["success"] = "Registro editado satisfactoriamente";
             return RedirectToAction("Index");
         }
@@ -99,12 +100,12 @@ namespace TPMVC.Core.Web.Controllers
             {
                 return NotFound();
             }
-            Sport sport = _services.Get(filter: b => b.SportId == id);
-            if (sport is null)
+            Colour colour = _services.Get(filter: b => b.ColourId == id);
+            if (colour is null)
             {
                 return NotFound();
             }
-            return View(sport);
+            return View(colour);
         }
 
         [HttpPost]
@@ -114,30 +115,19 @@ namespace TPMVC.Core.Web.Controllers
             {
                 return NotFound();
             }
-            Sport sport = _services.Get(filter: b => b.SportId == id);
-            if (sport is null)
+            Colour colour = _services.Get(filter: b => b.ColourId == id);
+            if (colour is null)
             {
                 return NotFound();
             }
-            if (_services.EstaRelacionado(sport.SportId))
+            if (_services.EstaRelacionado(colour.ColourId))
             {
                 ModelState.AddModelError(string.Empty, "El registro no puede borrarse, está relacionado");
-                return View(sport);
+                return View(colour);
             }
-            _services.Eliminar(sport);
+            _services.Eliminar(colour);
             TempData["success"] = "Registro eliminado correctamente";
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            var shoe = _services?.GetShoesForSport(id);
-            if (shoe == null || shoe.Count == 0)
-            {
-                ViewData["Mensaje"] = "No hay zapatillas asociadas a esta marca.";
-            }
-            return View(shoe);
         }
 
     }

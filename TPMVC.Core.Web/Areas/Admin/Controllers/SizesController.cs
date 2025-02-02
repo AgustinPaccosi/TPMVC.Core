@@ -11,8 +11,9 @@ using TPMVC.Core.Web.ViewModels.Shoe;
 using TPMVC.Core.Web.ViewModels.Size;
 using X.PagedList.Extensions;
 
-namespace TPMVC.Core.Web.Controllers
+namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class SizesController : Controller
     {
 
@@ -21,8 +22,8 @@ namespace TPMVC.Core.Web.Controllers
         private readonly IMapper _mapper;
         public SizesController(ISizesService? service, IMapper? mapper, IShoesSizesService serviceS)
         {
-            this._service = service;
-            this._shoesSizesService = serviceS;
+            _service = service;
+            _shoesSizesService = serviceS;
             _mapper = mapper;
         }
         public IActionResult Index(int? page, int pageSize = 10)

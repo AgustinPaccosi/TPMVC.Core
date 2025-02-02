@@ -5,8 +5,9 @@ using TPMVC.Core.Entities;
 using TPMVC.Core.Web.ViewModels.Genre;
 using X.PagedList.Extensions;
 
-namespace TPMVC.Core.Web.Controllers
+namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class GenresController : Controller
     {
         //public IActionResult Index()

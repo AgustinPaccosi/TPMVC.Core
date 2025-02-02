@@ -8,8 +8,9 @@ using TPMVC.Core.Web.ViewModels.Shoe;
 using X.PagedList.Extensions;
 using X.PagedList;
 
-namespace TPMVC.Core.Web.Controllers
+namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ShoesController : Controller
     {
         private readonly IShoesService? _service;
