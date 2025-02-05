@@ -29,6 +29,10 @@ namespace TPMVC.Core.Data
         public DbSet<Shoe> Shoes { get; set; }
         public DbSet<ShoeSize> ShoesSizes { get; set; }
         public DbSet<Size> Sizes { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -287,8 +291,27 @@ namespace TPMVC.Core.Data
                 entity.ToTable("ShoesSizes");
 
             });
-
-
+            modelBuilder.Entity<Country>(entity =>
+            {
+                entity.HasKey(e => e.CountryId);
+                entity.HasIndex(t => t.CountryName).IsUnique();
+                entity.Property(e => e.CountryName).IsRequired().HasMaxLength(50);
+            });
+            modelBuilder.Entity<State>(entity =>
+            {
+                entity.HasKey(e => e.StateId);
+                entity.HasIndex(t => t.StateName).IsUnique();
+                entity.Property(e => e.StateName).IsRequired().HasMaxLength(50);
+                entity.HasOne(ss => ss.Country).WithMany(s => s.States).HasForeignKey(sc => sc.StateId);
+            });
+            modelBuilder.Entity<City>(entity =>
+            {
+                entity.HasKey(e => e.CityId);
+                entity.HasIndex(t => t.CityName).IsUnique();
+                entity.Property(e => e.CityName).IsRequired().HasMaxLength(50);
+                entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CityId);
+                entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.CityId);
+            });
         }
 
 

@@ -7,10 +7,13 @@ using TPMVC.Core.Entities;
 using TPMVC.Core.Web.ViewModels.Shoe;
 using X.PagedList.Extensions;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class ShoesController : Controller
     {
         private readonly IShoesService? _service;

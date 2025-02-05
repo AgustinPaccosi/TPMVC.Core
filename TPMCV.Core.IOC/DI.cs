@@ -33,6 +33,13 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<IShoesSizesRepository, ShoesSizesRepository>();
 
+            servicios.AddScoped<ICountriesRepository, CountriesRepository>();
+
+            servicios.AddScoped<IStatesRepository, StatesRepository>();
+
+            servicios.AddScoped<ICitiesRepository, CitiesRepository>();
+
+
 
             //SERVICIOS
 
@@ -49,6 +56,12 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<ISizesService, SizesService>();
 
             servicios.AddScoped<IShoesSizesService, ShoesSizesService>();
+
+            servicios.AddScoped<ICountriesService, CountriesService>();
+
+            servicios.AddScoped<IStatesService, StatesService>();
+
+            servicios.AddScoped<ICitiesService, CitiesService>();
 
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();

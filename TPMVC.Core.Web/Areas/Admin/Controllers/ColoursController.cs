@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Core.Services.Interfaces;
 using TPMVC.Core.Entities;
@@ -8,6 +9,7 @@ using X.PagedList.Extensions;
 namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin")]
     public class ColoursController : Controller
     {
         private readonly IColoursService? _services;

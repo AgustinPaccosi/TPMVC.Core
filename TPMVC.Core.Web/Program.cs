@@ -96,7 +96,7 @@ namespace TPN1EnWeb.Web
                     EmailConfirmed = true
                 };
 
-                await userManager.CreateAsync(adminUser, "Admin123."); //Me lo agrega con esta contrase�a
+                await userManager.CreateAsync(adminUser, "Admin123."); //Me lo agrega con esta contrasea
 
                 // Asignar el rol de Admin al usuario
                 await userManager.AddToRoleAsync(adminUser, WC.Role_Admin); //Y por ltimo lo agrega al rol de Admin
