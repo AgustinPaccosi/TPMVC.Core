@@ -7,6 +7,7 @@ using TPMVC.Core.Web.ViewModels.Genre;
 using TPMVC.Core.Web.ViewModels.Shoe;
 using TPMVC.Core.Web.ViewModels.Size;
 using TPMVC.Core.Web.ViewModels.Sport;
+using TPMVC.Core.Web.ViewModels.State;
 
 namespace TPMVC.Core.Web.Mappings
 {
@@ -21,7 +22,13 @@ namespace TPMVC.Core.Web.Mappings
             LoadShoeMapping();
             LoadSizeMapping();
             LoadCountryMapping();
-        
+            LoadStateMapping();
+        }
+
+        private void LoadStateMapping()
+        {
+            CreateMap<State, StateListVM>().ForMember(dest=>dest.Country, opt=>opt.MapFrom(src=>src.Country.CountryName));
+            CreateMap<State, StateEditVM>().ReverseMap();
         }
 
         private void LoadCountryMapping()

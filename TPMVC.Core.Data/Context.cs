@@ -303,7 +303,11 @@ namespace TPMVC.Core.Data
                 entity.HasKey(e => e.StateId);
                 entity.HasIndex(t => t.StateName).IsUnique();
                 entity.Property(e => e.StateName).IsRequired().HasMaxLength(50);
-                entity.HasOne(ss => ss.Country).WithMany(s => s.States).HasForeignKey(sc => sc.StateId);
+                //entity.HasOne(ss => ss.Country).WithMany(s => s.States).HasForeignKey(sc => sc.StateId);
+                entity.HasOne(ss => ss.Country)
+                    .WithMany(s => s.States)
+                     .HasForeignKey(sc => sc.CountryId); // 🔴 Debe ser CountryId
+
             });
             modelBuilder.Entity<City>(entity =>
             {

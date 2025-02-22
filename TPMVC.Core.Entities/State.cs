@@ -13,6 +13,7 @@ namespace TPMVC.Core.Entities
         public string StateName { get; set; }
         public int CountryId { get; set; }
         public Country Country { get; set; }
+
         public ICollection<City> Cities { get; set; } = new List<City>();
     }
 }
