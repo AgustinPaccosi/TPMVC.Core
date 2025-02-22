@@ -2,6 +2,7 @@
 using TPMVC.Core.Entities;
 using TPMVC.Core.Web.ViewModels.Brand;
 using TPMVC.Core.Web.ViewModels.Colour;
+using TPMVC.Core.Web.ViewModels.Country;
 using TPMVC.Core.Web.ViewModels.Genre;
 using TPMVC.Core.Web.ViewModels.Shoe;
 using TPMVC.Core.Web.ViewModels.Size;
@@ -19,6 +20,13 @@ namespace TPMVC.Core.Web.Mappings
             LoadGenreMap();
             LoadShoeMapping();
             LoadSizeMapping();
+            LoadCountryMapping();
+        
+        }
+
+        private void LoadCountryMapping()
+        {
+            CreateMap<Country, CountryEditVM>().ReverseMap();
         }
 
         private void LoadBrandsMap()
@@ -62,5 +70,6 @@ namespace TPMVC.Core.Web.Mappings
             CreateMap<Size, SizeListVm>();
             CreateMap<Size, SizeEditVm>().ReverseMap();
         }
+       
     }
 }

@@ -29,6 +29,7 @@ namespace TPMVC.Core.Data
         public DbSet<Shoe> Shoes { get; set; }
         public DbSet<ShoeSize> ShoesSizes { get; set; }
         public DbSet<Size> Sizes { get; set; }
+
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
