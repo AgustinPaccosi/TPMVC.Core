@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MVC.Core.Services.Interfaces;
+using TPMVC.Core.Utilities;
+using TPMVC.Core.Entities;
 
 namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
 {
@@ -25,24 +31,36 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ICountriesService _countriesService;
+        private readonly IStatesService _statesService;
+        private readonly ICitiesService _citiesService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICountriesService countriesService, //Injecto los paises, estados y ciudades para poder hacer las funciones de los combos
+            IStatesService statesService,//Ya que los estados van a depender del país que elija y los mismo pasa con las ciudades que estas
+            ICitiesService citiesService)//dependen del estado que seleccione
         {
-            _userManager = userManager;
+            _userManager = userManager; //Permite manejar los usuarios
             _userStore = userStore;
             _emailStore = GetEmailStore();
+            _roleManager = roleManager; //Permite manejar los roles de los usuarios
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _countriesService = countriesService;
+            _statesService = statesService;
+            _citiesService = citiesService;
         }
 
         /// <summary>
@@ -97,14 +115,83 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Required(ErrorMessage = "{0} is required")]
+            [StringLength(100, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [DisplayName("First Name")]
+            public string FirstName { get; set; } = null!;
+
+            [Required(ErrorMessage = "{0} is required")]
+            [StringLength(100, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [DisplayName("Last Name")]
+            public string LastName { get; set; } = null!;
+
+            [Required(ErrorMessage = "{0} is required")]
+            [StringLength(200, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            public string Address { get; set; } = null!;
+
+            [MaxLength(20, ErrorMessage = "{0} must have at least {1} characters")]
+            public string? Phone { get; set; }
+
+            [Required(ErrorMessage = "{0} is required")]
+            [StringLength(10, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [DisplayName("Zip Code")]
+            public string ZipCode { get; set; } = null!;
+
+            [Required(ErrorMessage = "Country is required")]
+            [Range(1, int.MaxValue, ErrorMessage = "You must select a country")]
+            [DisplayName("Country")]
+            public int CountryId { get; set; }
+
+            [Required(ErrorMessage = "State is required")]
+            [Range(1, int.MaxValue, ErrorMessage = "You must select a state")]
+            [DisplayName("State")]
+            public int StateId { get; set; }
+
+            [Required(ErrorMessage = "City is required")]
+            [Range(1, int.MaxValue, ErrorMessage = "You must select a city")]
+            [DisplayName("City")]
+            public int CityId { get; set; }
+
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Countries { get; set; } = null!;
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> States { get; set; } = null!;
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Cities { get; set; } = null!;
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            Input = new InputModel //Con esto lleno los combos
+            {
+                Countries = _countriesService.GetAll(orderBy:
+                    o => o.OrderBy(c => c.CountryName)).Select(c => new SelectListItem
+                    {
+                        Text = c.CountryName,
+                        Value = c.CountryId.ToString()
+                    }),
+                States = _statesService.GetAll(orderBy:
+                    o => o.OrderBy(c => c.StateName)).Select(c => new SelectListItem
+                    {
+                        Text = c.StateName,
+                        Value = c.StateId.ToString()
+                    }),
+                Cities = _citiesService.GetAll(orderBy:
+                    o => o.OrderBy(c => c.CityName)).Select(c => new SelectListItem
+                    {
+                        Text = c.CityName,
+                        Value = c.CityId.ToString()
+                    }),
+
+            };
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+    
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -113,6 +200,14 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                //Cuando se crea el usuario le paso los datos
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.Address = Input.Address;
+                user.Zipcode = Input.ZipCode;
+                user.CountryId = Input.CountryId;
+                user.StateId = Input.StateId;
+                user.CityId = Input.CityId;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -121,6 +216,9 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    //Si se creo con exito la cuenta le asigo el rol de Customer
+                    await _userManager.AddToRoleAsync(user, WC.Role_Customer);
+
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -149,21 +247,25 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            else
+            {
+
+            }
 
             // If we got this far, something failed, redisplay form
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
@@ -175,6 +277,20 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+        public JsonResult OnGetGetStates(int countryId)
+        {
+            var stateList = _statesService.GetAll(
+                filter: s => s.CountryId == countryId).ToList();
+            return new JsonResult(stateList);
+
+        }
+        public JsonResult OnGetGetCities(int stateId)
+        {
+            var citiesList = _citiesService.GetAll(
+                filter: s => s.StateId == stateId).ToList();
+            return new JsonResult(citiesList);
+
         }
     }
 }

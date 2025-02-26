@@ -32,8 +32,8 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
 
-                        @* @if (User.IsInRole(WC.Role_Admin))
-                        { *@
+                        @if (User.IsInRole(WC.Role_Admin))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Brands" asp-action="Index">Marcas</a>
                         </li>
@@ -58,17 +58,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="States" asp-action="Index">Provincias</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cities" asp-action="Index">Ciudades</a>
+                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Usuarios</a>
+                            </li>
 
-                        @* }
+
+                        }
                         else
-                        { *@
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @* } *@
-                        @* <li class="nav-item">
+                        }
+                        <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> *@
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

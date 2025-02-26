@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TPMVC.Core.Entities;
+using TPMVC.Core.Web.ViewModels.ApplicationUser;
 using TPMVC.Core.Web.ViewModels.Brand;
+using TPMVC.Core.Web.ViewModels.City;
 using TPMVC.Core.Web.ViewModels.Colour;
 using TPMVC.Core.Web.ViewModels.Country;
 using TPMVC.Core.Web.ViewModels.Genre;
@@ -23,6 +26,22 @@ namespace TPMVC.Core.Web.Mappings
             LoadSizeMapping();
             LoadCountryMapping();
             LoadStateMapping();
+            LoadCityMapping();
+            LoadApplicationUser();
+        }
+
+        private void LoadApplicationUser()
+        {
+            CreateMap<ApplicationUser, ApplicationUserListVm>().ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.CountryName))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateName))
+                .ForMember(dest=>dest.City, opt=>opt.MapFrom(src=>src.City.CityName));
+        }
+
+        private void LoadCityMapping()
+        {
+            CreateMap<City, CityListVm>().ForMember(dest=>dest.CountryName, opt=>opt.MapFrom(src=>src.Country.CountryName))
+                .ForMember(dest=>dest.StateName, opt=>opt.MapFrom(src=>src.States.StateName));
+            CreateMap<City, CityEditVm>().ReverseMap();
         }
 
         private void LoadStateMapping()

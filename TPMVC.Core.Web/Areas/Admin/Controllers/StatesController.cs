@@ -25,31 +25,31 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _countriesService = countriesService ?? throw new ArgumentException("Dependencies not set"); ;
+            _countriesService = countriesService ?? throw new ArgumentException("Dependencies not set");
         }
         public IActionResult Index(int? page, int? filterId, int pageSize = 10, bool viewAll = false)
         {
             int pageNum = page ?? 1;
             ViewBag.currentPageSize = pageSize;
             IEnumerable<State>? states;
-            states = _services!
-              .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
-              propertiesNames: "Country");
-            //if (filterId is null || viewAll)
-            //{
-            //states = _service!
-            //    .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
-            //    propertiesNames: "Country", filter: c => c.CountryId == 11);
+            //states = _services!
+            //  .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
+            //  propertiesNames: "Country");
+            if (filterId is null || viewAll)
+            {
+                states = _services!
+                    .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
+                    propertiesNames: "Country");
 
-            //}
-            //else
-            //{
-            //    states = _service!
-            //         .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
-            //                 filter: s => s.CountryId == filterId,
-            //         propertiesNames: "Country");
-            //    ViewBag.currentFilterCountryId = filterId;
-            //}
+            }
+            else
+            {
+                states = _services!
+                     .GetAll(orderBy: o => o.OrderBy(s => s.StateName),
+                             filter: s => s.CountryId == filterId,
+                     propertiesNames: "Country");
+                ViewBag.currentFilterId = filterId;
+            }
             var statesVm = _mapper!
                 .Map<List<StateListVM>>(states);
             var stateFilterVm = new StateFilterVM
@@ -178,6 +178,40 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
                         .ToList();
 
                 return View(stateVm);
+            }
+        }
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null || id == 0)
+            {
+                return NotFound();
+            }
+            State? state = _services?.Get(filter: c => c.StateId == id);
+            if (state is null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                if (_services == null || _mapper == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
+                }
+
+                //if (_services.EstaRelacionado(state.StateId))
+                //{
+                //    return Json(new { success = false, message = "Related Record... Delete Deny!!" }); ;
+                //}
+                _services.Eliminar(state);
+                return Json(new { success = true, message = "Record successfully deleted" });
+            }
+            catch (Exception)
+            {
+
+                return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
+
             }
         }
     }

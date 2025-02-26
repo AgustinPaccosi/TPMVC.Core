@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MVC.Core.Services\MVC.Core.Services.csproj" />
     <ProjectReference Include="..\TPMVC.Core.Data\TPMVC.Core.Data.csproj" />
+    <ProjectReference Include="..\TPMVC.Core.Utilities\TPMVC.Core.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

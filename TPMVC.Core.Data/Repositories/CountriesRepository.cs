@@ -25,7 +25,7 @@ namespace TPMVC.Core.Data.Repositories
 
         public bool EstaRelacionado(int id)
         {
-            return _context.Countries.Any(s => s.CountryId == id);
+            return _context.States.Any(s => s.CountryId == id);
         }
 
         public bool Existe(Country country)

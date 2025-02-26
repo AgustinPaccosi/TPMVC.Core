@@ -6,7 +6,9 @@
     new { page ,
                 searchTerm = ViewBag.currentSearchTerm,
                 pageSize = ViewBag.currentPageSize,
-                FilterBrandId = ViewBag.currentFilterBrandId
+                FilterBrandId = ViewBag.currentFilterBrandId,
+                filterId=ViewBag.currentFilterId
+
     }), new PagedListRenderOptions
 {
     UlElementClasses = new[] { "pagination" },

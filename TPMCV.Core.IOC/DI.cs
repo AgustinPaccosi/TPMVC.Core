@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Core.Services.Interfaces;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using TPMVC.Core.Data;
 using TPMVC.Core.Data.Interfaces;
 using TPMVC.Core.Data.Repositories;
+using TPMVC.Core.Utilities;
 
 namespace TPMCV.Core.IOC
 {
@@ -39,6 +41,10 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<ICitiesRepository, CitiesRepository>();
 
+            servicios.AddScoped<IEmailSender, EmailSender>();
+
+            servicios.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+
 
 
             //SERVICIOS
@@ -62,6 +68,8 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<IStatesService, StatesService>();
 
             servicios.AddScoped<ICitiesService, CitiesService>();
+
+            servicios.AddScoped<IApplicationUserService, ApplicationUserService>();
 
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();

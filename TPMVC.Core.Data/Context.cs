@@ -34,6 +34,8 @@ namespace TPMVC.Core.Data
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -314,8 +316,8 @@ namespace TPMVC.Core.Data
                 entity.HasKey(e => e.CityId);
                 entity.HasIndex(t => t.CityName).IsUnique();
                 entity.Property(e => e.CityName).IsRequired().HasMaxLength(50);
-                entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CityId);
-                entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.CityId);
+                entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CountryId);
+                entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.StateId);
             });
         }
 
