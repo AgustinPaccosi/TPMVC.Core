@@ -16,7 +16,9 @@
     <header>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+           
             <div class="container-fluid">
+                
                 @if (User.IsInRole(WC.Role_Admin))
                 {
                     <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">TPMVC.Core.Web</a>
@@ -64,8 +66,6 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Usuarios</a>
                             </li>
-
-
                         }
                         else
                         {

@@ -66,7 +66,7 @@ namespace TPN1EnWeb.Web
                 name: "default",
                 //Puede tener recibir un controlador, sino por defecto es Home, puede recibir una accin, sino por defecto es Index
                 //y podra llegar a recibir un parametro (este es opcional)
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"); //Ahora como tenemos un area se la debemos agregar al patrn, adems debo pasarle
+                pattern: "{area=Customer}/{controller=Home}/{action=Hero}/{id?}"); //Ahora como tenemos un area se la debemos agregar al patrn, adems debo pasarle
                                                                                    //el _viewimport y el _viewstart tanto a las vistas del area admin como a customer
 
             app.Run();
