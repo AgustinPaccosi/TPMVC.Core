@@ -39,5 +39,7 @@ namespace TPMVC.Core.Web.ViewModels.Shoe
 
         [Required(ErrorMessage = "{0} es requerido")]
         public bool Active { get; set; }
+        public string imageURL { get; set; }
+        public decimal PrecioEfectivo { get; set; }
     }
 }

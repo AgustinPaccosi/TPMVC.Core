@@ -22,6 +22,7 @@ namespace TPMVC.Core.Entities
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
         public bool Active { get; set; }
+        public string? imageURL { get; set; } 
         public ICollection<ShoeSize> ShoesSizes { get; set; } = new List<ShoeSize>();
 
     }

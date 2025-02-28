@@ -87,7 +87,8 @@ namespace TPMVC.Core.Web.Mappings
                  .ForMember(dest => dest.Description,
                  opt => opt.MapFrom(p => p.Description))
                  .ForMember(dest => dest.Model,
-                 opt => opt.MapFrom(p => p.Model)).ReverseMap();
+                 opt => opt.MapFrom(p => p.Model))
+                 .ForMember(dest=>dest.PrecioEfectivo, opt=>opt.MapFrom(p=>p.Price*0.6m)).ReverseMap();
             CreateMap<Shoe, ShoeEditVm>().ReverseMap();
         }
 

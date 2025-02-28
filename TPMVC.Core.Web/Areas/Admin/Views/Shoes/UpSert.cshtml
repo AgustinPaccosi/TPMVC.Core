@@ -4,11 +4,23 @@
 @using X.PagedList
 
 @{
+    bool filExist = false;
+    if (ViewData["fileExist"] != null)
+    {
+        filExist = (bool)ViewData["fileExist"]!;
+    }
     ViewData["Title"] = "New/Edit Shoe";
+
 }
-<form method="post" asp-action="UpSert" class="w-75">
+
+@* <form method="post" asp-action="UpSert" class="w-75">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ShoeId" /> *@
+<form method="post" asp-controller="Shoes" asp-action="UpSert" enctype="multipart/form-data">
     <input type="hidden" asp-for="ShoeId" />
+    <input type="hidden" asp-for="returnURL" />
+    <input type="hidden" asp-for="imageURL" />@* Guardo la ruta de la imagen en caso de que edite el objeto y no la imagen y que la ruta de esa imagen no se borre*@
+
 
     <div class="border p-3 bg-white">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -61,7 +73,42 @@
             <input asp-for="Price" class="form-control" type="number" step="0.05" min="0.05" max="100000" />
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
+        <div class="row mb-2" style="color:#ffffff;">
+            <div class="form-group py2 mb-3 col-auto">
+                <label class="form-label" asp-for="imageURL"></label>
+                <input type="file" class="form-control" asp-for="ImageFile" />
+            </div>
+            <div class="col-4 text-center">
+                @if (Model.imageURL != null)
+                {
+                    if (filExist)
+                    {
+                        <div class="col-auto text-center mt-3">
+                            <img src="@Model.imageURL" style="width:200px; height:150px; border:dashed 1px" />
+                        </div>
 
+                        <div class="form-group py-2">
+                            <div>
+                                <label for="RemoveImage">Remove current image</label>
+                                <input type="checkbox" id="RemoveImage" name="RemoveImage" value="true" />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-auto text-center mt-3">
+                            <img src="~/images/8499cb70-aaa3-4fd9-b516-a00b2920f131.jpg" style="width:200px; height:150px; border:dashed 1px" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-auto text-center mt-3">
+                        <img src="~/images/8499cb70-aaa3-4fd9-b516-a00b2920f131.jpg" style="width:200px; height:150px; border:dashed 1px" />
+                    </div>
+                }
+            </div>
+        </div>
         @if (Model.ShoeId == 0)
         {
             <button type="submit" class="btn btn-primary">

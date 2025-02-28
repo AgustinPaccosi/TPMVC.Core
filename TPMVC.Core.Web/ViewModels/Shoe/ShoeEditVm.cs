@@ -58,5 +58,10 @@ namespace TPMVC.Core.Web.ViewModels.Shoe
         [Range(0.05, 1000000, ErrorMessage = "{0} must be greater than zero")]
         [DisplayName("Price")]
         public decimal Price { get; set; }
+
+        public string? imageURL { get; set; }
+        public IFormFile ? ImageFile { get; set; }
+        public string ? returnURL { get; set; }
+        
     }
 }

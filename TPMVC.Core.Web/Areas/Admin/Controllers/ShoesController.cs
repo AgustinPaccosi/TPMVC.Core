@@ -8,6 +8,8 @@ using TPMVC.Core.Web.ViewModels.Shoe;
 using X.PagedList.Extensions;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using TPMVC.Core.Web.ViewModels.Size;
 
 namespace TPMVC.Core.Web.Areas.Admin.Controllers
 {
@@ -24,12 +26,13 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
         private readonly ISizesService? _serviceSize;
         private readonly IShoesSizesService? _serviceShoeSize;
         private readonly IMapper? _mapper;
+        private readonly IWebHostEnvironment ? webHostEnviroment;
 
         public ShoesController(IShoesService? service,
             IBrandsService? servicioBrand, ISportsService? servicioSport,
             IGenresService? servicioGenre, IColoursService? servicioColour,
             ISizesService? servicioSize, IShoesSizesService servicioShoeSize
-            , IMapper? mapper)
+            , IMapper? mapper, IWebHostEnvironment? webHostEnviroment)
         {
             _service = service ?? throw new ArgumentException("Dependencies not set");
             _serviceBrand = servicioBrand ?? throw new ArgumentNullException(nameof(servicioBrand));
@@ -39,6 +42,7 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
             _serviceSize = servicioSize ?? throw new ArgumentException("Dependencies not set");
             _serviceShoeSize = servicioShoeSize ?? throw new ArgumentException("Dependencies not set");
             _mapper = mapper ?? throw new ArgumentException("Dependencies not set");
+            this.webHostEnviroment = webHostEnviroment ?? throw new ArgumentException("Dependencies not set");
         }
         public IActionResult Index(int? page, int? FilterBrandId, int pageSize = 10, bool viewAll = false)
         {
@@ -75,38 +79,194 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
             return View(shoeFilterVm);
         }
 
-
-        public IActionResult UpSert(int? id)
+        public IActionResult UpSert(int? id, string? returnurl = null)
         {
-            ShoeEditVm shoeEditVm;
-            if (id == null || id == 0)
+            ShoeEditVm? shoeEditVM;
+            if (id is null || id.Value == 0)
             {
-                shoeEditVm = new ShoeEditVm();
-                CargarComboBoxs(shoeEditVm); //TODO
+                shoeEditVM = new ShoeEditVm();
+                RercargarCombos(shoeEditVM);
             }
             else
             {
                 try
                 {
-                    Shoe? shoe = _service!.Get(filter: c => c.ShoeId == id);
+                    string? wwwWebRoot = webHostEnviroment!.WebRootPath;
+                    Shoe? shoe = _service?.Get(s => s.ShoeId == id.Value);
                     if (shoe == null)
                     {
                         return NotFound();
                     }
-                    shoeEditVm = _mapper!.Map<ShoeEditVm>(shoe);
-                    CargarComboBoxs(shoeEditVm);
-                    return View(shoeEditVm);
+                    if (!string.IsNullOrEmpty(shoe.imageURL))
+                    {
+                        string filePath = Path.Combine(wwwWebRoot, shoe.imageURL.TrimStart('/'));
+                        ViewData["fileExist"] = System.IO.File.Exists(filePath);
+                    }
+                    else
+                    {
+                        ViewData["fileExist"] = false;
+                    }
+                    shoeEditVM = _mapper?.Map<ShoeEditVm>(shoe);
+                    RercargarCombos(shoeEditVM);
+                    shoeEditVM!.returnURL = returnurl;
+
+                    return View(shoeEditVM);
                 }
                 catch (Exception)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the record.");
+
+                    throw;
                 }
-
             }
-            return View(shoeEditVm);
-
+            return View(shoeEditVM);
         }
+        private void RercargarCombos(ShoeEditVm? shoeEditVM)
+        {
+            shoeEditVM!.Brands = _serviceBrand!.GetAll()!
+                .Select(b => new SelectListItem
+                {
+                    Text = b.BrandName,
+                    Value = b.BrandId.ToString()
+                }
+                ).ToList();
+            shoeEditVM.Colours = _serviceColour!.GetAll()!
+              .Select(c => new SelectListItem
+              {
+                  Text = c.ColourName,
+                  Value = c.ColourId.ToString()
+              }
+              ).ToList();
+            shoeEditVM.Genres = _serviceGenre!.GetAll()!
+              .Select(g => new SelectListItem
+              {
+                  Text = g.GenreName,
+                  Value = g.GenreId.ToString()
+              }
+              ).ToList();
+            shoeEditVM.Sports = _serviceSport!.GetAll()!
+              .Select(s => new SelectListItem
+              {
+                  Text = s.SportName,
+                  Value = s.SportId.ToString()
+              }
+              ).ToList();
+        }
+        //public IActionResult UpSert(int? id)
+        //{
+        //    ShoeEditVm shoeEditVm;
+        //    if (id == null || id == 0)
+        //    {
+        //        shoeEditVm = new ShoeEditVm();
+        //        CargarComboBoxs(shoeEditVm); //TODO
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            Shoe? shoe = _service!.Get(filter: c => c.ShoeId == id);
+        //            if (shoe == null)
+        //            {
+        //                return NotFound();
+        //            }
+        //            shoeEditVm = _mapper!.Map<ShoeEditVm>(shoe);
+        //            CargarComboBoxs(shoeEditVm);
+        //            return View(shoeEditVm);
+        //        }
+        //        catch (Exception)
+        //        {
+        //            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the record.");
+        //        }
 
+        //    }
+        //    return View(shoeEditVm);
+
+        //}
+        [HttpPost]
+        public IActionResult UpSert(ShoeEditVm shoeEditVM)
+        {
+            string? returnurl = shoeEditVM!.returnURL;
+            if (!ModelState.IsValid)
+            {
+                RercargarCombos(shoeEditVM);
+                return View(shoeEditVM);
+            }
+            try
+            {
+                string? webroot = webHostEnviroment!.WebRootPath;
+                Shoe shoe = _mapper!.Map<Shoe>(shoeEditVM);
+                var brand = _serviceBrand!.Get(filter: filter => filter.BrandId == shoe.BrandId);
+                var sport = _serviceSport!.Get(filter: filter => filter.SportId == shoe.SportId);
+                var genre = _serviceGenre!.Get(filter: filter => filter.GenreId == shoe.GenreId);
+                var color = _serviceColour!.Get(filter: filter => filter.ColourId == shoe.ColourId);
+                shoe.Colour = color;
+                shoe.Brand = brand;
+                shoe.Genre = genre;
+                shoe.Sport = sport;
+                if (shoe == null)
+                {
+                    ModelState.AddModelError(string.Empty, "No Shoe has been supplied");
+                    return View(shoeEditVM);
+                }
+                if (_service!.Existe(shoe))
+                {
+                    ModelState.AddModelError(string.Empty, "Record already exist");
+                    RercargarCombos(shoeEditVM);
+                    return View(shoeEditVM);
+                }
+                //if (!shoeEditVM.RemoveImage)
+                //{
+                    if (shoeEditVM!.ImageFile != null)
+                    {
+                        var permittedExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png" }; //Estas van a ser las extesiones que voy a permitir subir, si no hay alguna que yo desee, la agrego
+                        string fileExtension = Path.GetExtension(shoeEditVM.ImageFile.FileName); //Obtenemos la extension del nombre de nuestro archivo
+                        if (!permittedExtensions.Contains(fileExtension)) // si la extension que obtuvimos de nuestro archivo no esta en los permitidos, va a tirar error y volver a la vista
+                        {
+                            ModelState.AddModelError(string.Empty, "File not allowed");
+                            RercargarCombos(shoeEditVM);
+                            return View(shoeEditVM);
+                        }
+
+                        if (shoeEditVM.imageURL != null)
+                        {
+                            string? oldPath = Path.Combine(webroot, shoe.imageURL!.TrimStart('/'));
+                            if (System.IO.File.Exists(oldPath)) //Me fijo si existe esta ruta
+                            {
+                                System.IO.File.Delete(oldPath);//La doy de baja porque voy a ingresar una nueva en el objeto
+                            }
+                        }
+                        string fileName = $"{Guid.NewGuid()}{Path.GetExtension(shoeEditVM.ImageFile.FileName)}";
+                        string pathName = Path.Combine(webroot, "images", fileName); //Nombre de la ruta combinando el webroot que es la ruta web,el nombre del archivo y el string "images"
+                        using (var filestream = new FileStream(pathName, FileMode.Create))
+                        {
+                            shoeEditVM.ImageFile.CopyTo(filestream); // Con esto subo mi imagen a la carpeta images en wwroot
+                        }
+                        shoe.imageURL = $"/images/{fileName}";
+                }
+                //}
+                //else
+                //{
+                //    string? oldPath = Path.Combine(webroot, shoe.imageURL!.TrimStart('/'));
+                //    if (System.IO.File.Exists(oldPath)) //Me fijo si existe esta ruta
+                //    {
+                //        System.IO.File.Delete(oldPath);//La doy de baja porque voy a ingresar una nueva en el objeto
+                //    }
+                //    shoe.imageURL = null;
+                //}
+
+                _service.Guardar(shoe);
+                TempData["success"] = "Record successfully added/edited";
+                return !string.IsNullOrEmpty(returnurl)
+           ? Redirect(returnurl)
+           : RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                RercargarCombos(shoeEditVM);
+                // Log the exception (ex) here as needed
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the record.");
+                return View(shoeEditVM);
+            }
+        }
         private void CargarComboBoxs(ShoeEditVm shoeEditVm)
         {
             shoeEditVm.Brands = _serviceBrand
@@ -134,75 +294,114 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpSert(ShoeEditVm ShoeEditVm)
-        {
-            if (!ModelState.IsValid)
-            {
-                CargarComboBoxs(ShoeEditVm);
-                return View(ShoeEditVm);
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult UpSert(ShoeEditVm ShoeEditVm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        CargarComboBoxs(ShoeEditVm);
+        //        return View(ShoeEditVm);
+        //    }
 
-            if (_service == null || _mapper == null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
-            }
+        //    if (_service == null || _mapper == null)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
+        //    }
 
-            try
-            {
-                Shoe Shoe = _mapper.Map<Shoe>(ShoeEditVm);
+        //    try
+        //    {
+        //        Shoe Shoe = _mapper.Map<Shoe>(ShoeEditVm);
 
-                if (_service.Existe(Shoe))
-                {
-                    ModelState.AddModelError(string.Empty, "Record already exist");
-                    CargarComboBoxs(ShoeEditVm);
-                    return View(ShoeEditVm);
-                }
+        //        if (_service.Existe(Shoe))
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Record already exist");
+        //            CargarComboBoxs(ShoeEditVm);
+        //            return View(ShoeEditVm);
+        //        }
 
-                _service.Guardar(Shoe);
-                TempData["success"] = "Record successfully added/edited";
-                return RedirectToAction("Index");
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "An error occurred while editing the record.");
-                CargarComboBoxs(ShoeEditVm);
+        //        _service.Guardar(Shoe);
+        //        TempData["success"] = "Record successfully added/edited";
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "An error occurred while editing the record.");
+        //        CargarComboBoxs(ShoeEditVm);
 
-                return View(ShoeEditVm);
-            }
-        }
+        //        return View(ShoeEditVm);
+        //    }
+        //}
 
         [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id is null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Shoe? Shoe = _service?.Get(filter: g => g.ShoeId == id);
-            if (Shoe is null)
+            Shoe? shoe = _service?.Get(filter: g => g.ShoeId == id);
+            if (shoe == null)
             {
                 return NotFound();
             }
-            try
-            {
-                if (_service == null || _mapper == null)
+            //List<ShoeSize> listaDeSizes = new List<ShoeSize>();
+            //listaDeSizes = _service!.GetAllShoesSizes(shoe.ShoeId);
+            //foreach (var item in listaDeSizes)
+            //{
+                if (_service?.EstaRelacionado(shoe.ShoeId) ?? true)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Related Record..."
+                    });
                 }
-                if (_service.EstaRelacionado(Shoe.ShoeId))
-                {
-                    return Json(new { success = false, message = "Related Record... Delete Deny!!" }); ;
-                }
-                _service.Eliminar(Shoe);
-                return Json(new { success = true, message = "Record successfully deleted" });
-            }
-            catch (Exception)
+                
+            //}
+            if (shoe.imageURL != null)
             {
-                return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
+                string? webroot = webHostEnviroment!.WebRootPath;
+                string? oldPath = Path.Combine(webroot, shoe.imageURL!.TrimStart('/'));
+                if (System.IO.File.Exists(oldPath)) //Me fijo si existe esta ruta
+                {
+                    System.IO.File.Delete(oldPath);//La doy de baja porque voy a ingresar una nueva en el objeto
+                }
             }
+            _service.Eliminar(shoe);
+            return Json(new { success = true, message = "Record deleted successfully" });
+
+
         }
+            //public IActionResult Delete(int? id)
+            //{
+            //    if (id is null || id == 0)
+            //    {
+            //        return NotFound();
+            //    }
+            //    Shoe? Shoe = _service?.Get(filter: g => g.ShoeId == id);
+            //    if (Shoe is null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    try
+            //    {
+            //        if (_service == null || _mapper == null)
+            //        {
+            //            return StatusCode(StatusCodes.Status500InternalServerError, "Dependencias no están configuradas correctamente");
+            //        }
+            //        if (_service.EstaRelacionado(Shoe.ShoeId))
+            //        {
+            //            return Json(new { success = false, message = "Related Record... Delete Deny!!" }); ;
+            //        }
+            //        _service.Eliminar(Shoe);
+            //        return Json(new { success = true, message = "Record successfully deleted" });
+            //    }
+            //    catch (Exception)
+            //    {
+            //        return Json(new { success = false, message = "Couldn't delete record!!! " }); ;
+            //    }
+            //}
 
         public IActionResult AddSize(int id)
         {
