@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MVC.Core.Data.Services;
 using MVC.Core.Services.Interfaces;
 using MVC.Core.Services.Services;
 using System;
@@ -45,6 +46,8 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
+            servicios.AddScoped<IShoppingCartsRepository, ShoppingCartsRepository>();
+
 
 
             //SERVICIOS
@@ -70,6 +73,8 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<ICitiesService, CitiesService>();
 
             servicios.AddScoped<IApplicationUserService, ApplicationUserService>();
+
+            servicios.AddScoped<IShoppingCartService, ShoppingCartService>();
 
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();

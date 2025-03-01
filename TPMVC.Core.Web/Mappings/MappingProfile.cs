@@ -8,6 +8,7 @@ using TPMVC.Core.Web.ViewModels.Colour;
 using TPMVC.Core.Web.ViewModels.Country;
 using TPMVC.Core.Web.ViewModels.Genre;
 using TPMVC.Core.Web.ViewModels.Shoe;
+using TPMVC.Core.Web.ViewModels.ShoppingCart;
 using TPMVC.Core.Web.ViewModels.Size;
 using TPMVC.Core.Web.ViewModels.Sport;
 using TPMVC.Core.Web.ViewModels.State;
@@ -28,6 +29,22 @@ namespace TPMVC.Core.Web.Mappings
             LoadStateMapping();
             LoadCityMapping();
             LoadApplicationUser();
+            LoadShoppinCartMapping();
+        }
+
+        private void LoadShoppinCartMapping()
+        {
+            CreateMap<ShoppingCartDetailVm, ShoppingCart>()
+                .ForMember(dest => dest.ShoeSizeId, opt => opt.MapFrom(src => src.ShoeSizeId))
+                .ForMember(dest => dest.ApplicationUser, opt => opt.Ignore())
+                .ForMember(dest => dest.ApplicationUserId, opt => opt.MapFrom(src => src.ApplicationUserId));
+
+            //CreateMap<ShoppingCart, OrderDetail>()
+            //    .ForMember(dest => dest.OrderHeaderId, opt => opt.Ignore())
+            //    .ForMember(dest => dest.ShoeSizes, opt => opt.Ignore())
+            //    .ForMember(dest => dest.ShoeSizeId, opt => opt.MapFrom(src => src.ShoeSizeId))
+            //    .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+            //    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (src.Quantity == 1 ? src.ShoeSize.Shoe.Price : src.ShoeSize.Shoe.Price * 0.9M)));
         }
 
         private void LoadApplicationUser()
@@ -90,6 +107,7 @@ namespace TPMVC.Core.Web.Mappings
                  opt => opt.MapFrom(p => p.Model))
                  .ForMember(dest=>dest.PrecioEfectivo, opt=>opt.MapFrom(p=>p.Price*0.6m)).ReverseMap();
             CreateMap<Shoe, ShoeEditVm>().ReverseMap();
+            
         }
 
         private void LoadSizeMapping()

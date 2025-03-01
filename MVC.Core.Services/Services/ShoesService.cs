@@ -103,9 +103,9 @@ namespace MVC.Core.Services.Services
             return _repository.GetAllShoesSizes(shoeId);
         }
 
-        public ShoeSize? GetShoeSizeBySizeNumber(decimal sizeNumber, int shoeId)
+        public ShoeSize? GetShoeSizeByIds(int sizeNumber, int shoeId)
         {
-            return _repository.GetShoeSizeBySizeNumber(sizeNumber, shoeId);
+            return _repository.GetShoeSizeByIds( sizeNumber,  shoeId);
         }
 
         public void UpdateShoeSize(ShoeSize ss)

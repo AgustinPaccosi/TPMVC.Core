@@ -14,6 +14,7 @@ namespace TPMVC.Core.Entities
         public int SizeId { get; set; }
         public Size Size { get; set; } = null!;
         public int QuantityInStock { get; set; }
-
+        public int StockInCarts { get; set; }
+        public int AvailableStock { get => QuantityInStock - StockInCarts; }
     }
 }

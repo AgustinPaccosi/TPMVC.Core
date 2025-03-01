@@ -92,25 +92,33 @@ namespace TPMVC.Core.Data.Repositories
 
         }
 
-        public ShoeSize? GetShoeSizeBySizeNumber(decimal sizeNumber, int shoeId)
+        public ShoeSize? GetShoeSizeByIds(int sizeNumber, int shoeId)
         {
-            return _context.ShoesSizes
-            .FromSqlRaw("EXEC GetShoeSizeBySizeNumber @SizeNumber = {0}, @ShoeId = {1}", sizeNumber, shoeId)
-            .AsEnumerable()
-            .FirstOrDefault();
+            var shoeSize=_context.ShoesSizes.Where(b => b.ShoeId == shoeId && b.SizeId == sizeNumber).FirstOrDefault();
+            return shoeSize;
+            //return _context.ShoesSizes
+            //.FromSqlRaw("EXEC GetShoeSizeBySizeNumber @SizeNumber = {0}, @ShoeId = {1}", sizeNumber, shoeId)
+            //.AsEnumerable()
+            //.FirstOrDefault();
         }
 
         public List<ShoeSize> GetAllShoesSizes(int shoeId)
         {
-            var shoesSizes = _context.ShoesSizes
-            .FromSqlRaw("EXEC GetAllSizesWithStock @ShoeId = {0}", shoeId)
-            .ToList();
+            //List<ShoeSize> shoesSizes = _context.ShoesSizes.Any(b=>b.ShoeId == shoeId);
+            ////.FromSqlRaw("EXEC GetAllSizesWithStock @ShoeId = {0}", shoeId)
+            ////.ToList();
 
-            
-            foreach (var shoeSize in shoesSizes)
-            {
-                shoeSize.Size = _context.Sizes.FirstOrDefault(s => s.SizeId == shoeSize.SizeId);
-            }
+
+            ////foreach (var shoeSize in shoesSizes)
+            ////{
+            ////    shoeSize.Size = _context.Sizes.FirstOrDefault(s => s.SizeId == shoeSize.SizeId);
+            ////}
+
+            //return shoesSizes;
+            List<ShoeSize> shoesSizes = _context.ShoesSizes
+        .Where(b => b.ShoeId == shoeId)
+        .Include(s => s.Size) // Asegúrate de que la relación está bien configurada en el modelo
+        .ToList();
 
             return shoesSizes;
         }

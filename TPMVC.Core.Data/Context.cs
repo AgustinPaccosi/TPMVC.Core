@@ -35,6 +35,8 @@ namespace TPMVC.Core.Data
         public DbSet<City> Cities { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts {get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -319,6 +321,24 @@ namespace TPMVC.Core.Data
                 entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CountryId);
                 entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.StateId);
             });
+            modelBuilder.Entity<ShoppingCart>(entity =>
+            {
+                entity.HasKey(e => e.ShoppingCartId);
+                entity.HasIndex(t => t.ShoppingCartId).IsUnique();
+                entity.Property(e => e.Quantity).IsRequired();
+                entity.Property(e => e.LastUpdate).IsRequired();
+                entity.HasOne(sc => sc.ShoeSize)
+                    .WithMany() // Sin relación inversa, ya que ShoeSize no necesita conocer ShoppingCart
+                    .HasForeignKey(sc => sc.ShoeSizeId); // O el comportamiento de tu preferencia
+
+                // Configura la relación con ApplicationUser
+                entity.HasOne(sc => sc.ApplicationUser)
+                      .WithMany()
+                      .HasForeignKey(sc => sc.ApplicationUserId);
+                //entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CountryId);
+                //entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.StateId);
+            });
+
         }
 
 

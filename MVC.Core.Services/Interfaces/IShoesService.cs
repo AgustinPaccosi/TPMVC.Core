@@ -30,7 +30,7 @@ namespace MVC.Core.Services.Interfaces
         bool EstaRelacionado(int id);
 
         public List<ShoeSize> GetAllShoesSizes(int shoeId);
-        public ShoeSize? GetShoeSizeBySizeNumber(decimal sizeNumber, int shoeId);
+        public ShoeSize? GetShoeSizeByIds(int sizeNumber, int shoeId);
 
         public void UpdateShoeSize(ShoeSize ss);
         public void InsertShoeSize(ShoeSize shoeSize);

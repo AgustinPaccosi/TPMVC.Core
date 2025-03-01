@@ -18,11 +18,12 @@
             <div class="row p-2">
                 <div class="col">
                     <div class="card">
-                        <img src="@item.imageURL" class="card-img-top" alt="...">
+                        <img src="@item.imageURL" class="card-img-top" @* style="height:150px; width:150px; object-fit:cover" *@ alt="...">
                         <div class="card-body">
                             <h5 class="card-title">@item.Model - @item.BrandName</h5>
-
                             <p class="card-text">@item.Description</p>
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@item.ShoeId" 
+                                        asp-route-returnurl="@Url.Action("Index", new {page=Model.PageNumber})" asp-route-Page="@ViewBag.CurrentPage" class="btn btn-primary">Agregar Al Carrito</a>
                         </div>
                     </div>
                 </div>
