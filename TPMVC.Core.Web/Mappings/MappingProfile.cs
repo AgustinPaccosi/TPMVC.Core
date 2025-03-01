@@ -7,6 +7,7 @@ using TPMVC.Core.Web.ViewModels.City;
 using TPMVC.Core.Web.ViewModels.Colour;
 using TPMVC.Core.Web.ViewModels.Country;
 using TPMVC.Core.Web.ViewModels.Genre;
+using TPMVC.Core.Web.ViewModels.OrderHeaderVista;
 using TPMVC.Core.Web.ViewModels.Shoe;
 using TPMVC.Core.Web.ViewModels.ShoppingCart;
 using TPMVC.Core.Web.ViewModels.Size;
@@ -30,6 +31,14 @@ namespace TPMVC.Core.Web.Mappings
             LoadCityMapping();
             LoadApplicationUser();
             LoadShoppinCartMapping();
+            LoadOrderHeadersMapping();
+        }
+
+        private void LoadOrderHeadersMapping()
+        {
+            CreateMap<OrderHeaderEditVm, OrderHeader>()
+                .ForMember(dest => dest.OrderDetail, opt => opt.MapFrom(
+                    src => src.OrderDetails));
         }
 
         private void LoadShoppinCartMapping()
@@ -39,12 +48,12 @@ namespace TPMVC.Core.Web.Mappings
                 .ForMember(dest => dest.ApplicationUser, opt => opt.Ignore())
                 .ForMember(dest => dest.ApplicationUserId, opt => opt.MapFrom(src => src.ApplicationUserId));
 
-            //CreateMap<ShoppingCart, OrderDetail>()
-            //    .ForMember(dest => dest.OrderHeaderId, opt => opt.Ignore())
-            //    .ForMember(dest => dest.ShoeSizes, opt => opt.Ignore())
-            //    .ForMember(dest => dest.ShoeSizeId, opt => opt.MapFrom(src => src.ShoeSizeId))
-            //    .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
-            //    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (src.Quantity == 1 ? src.ShoeSize.Shoe.Price : src.ShoeSize.Shoe.Price * 0.9M)));
+            CreateMap<ShoppingCart, OrderDetail>()
+                .ForMember(dest => dest.OrderHeaderId, opt => opt.Ignore())
+                .ForMember(dest => dest.ShoeSizes, opt => opt.Ignore())
+                .ForMember(dest => dest.ShoeSizeId, opt => opt.MapFrom(src => src.ShoeSizeId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (src.Quantity == 1 ? src.ShoeSize.Shoe.Price : src.ShoeSize.Shoe.Price * 0.9M)));
         }
 
         private void LoadApplicationUser()

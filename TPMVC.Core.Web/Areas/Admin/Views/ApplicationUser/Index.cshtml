@@ -4,10 +4,11 @@
 @{
 }
 
+
 @model IPagedList<ApplicationUserListVm>
-@using X.PagedList
-@using X.Web.PagedList
 @{
+    @using X.PagedList
+    @using X.Web.PagedList
     ViewData["Title"] = "Customers List";
 }
 <div class="container">
@@ -105,7 +106,6 @@
         </tbody>
     </table>
     <partial name="_Page" model="@Model" />
-
 </div>
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.js"></script>
