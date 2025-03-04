@@ -2,10 +2,10 @@
 
 @model ApplicationUser
 <div>
-    <h4 style="color:#ffffff">Customers Details</h4>
+    <h4 style="color:#000000">Customers Details</h4>
     <hr />
     <dl class="row">
-        <div class="col-6" style="color:#ffffff">
+        <div class="col-6" style="color:#000888">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.FirstName)
             </dt>
@@ -33,7 +33,7 @@
             </dd>
 
         </div>
-        <div class="col-6" style="color:#ffffff">
+        <div class="col-6" style="color:#000888">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Country)
             </dt>
@@ -68,7 +68,7 @@
         Back to List
     </a>
 </div>
-<table id="salesTable" class="table table-bordered table-hover" style="color:#ffffff">
+<table id="salesTable" class="table table-bordered" style="color:#000888">
     <thead>
         <tr>
             <th style="width:10%">Order No.</th>
@@ -95,7 +95,7 @@
                     @item.OrderTotal
                 </td>
                 <td>
-                    <a class="btn btn-info" asp-area="Customer" asp-controller="Orders" asp-action="Details" asp-route-id="@item.OrderHeaderId">
+                    <a class="btn btn-info" asp-area="Customer" asp-controller="Order" asp-action="Details" asp-route-id="@item.OrderHeaderId">
                         <i class="bi bi-card-list"></i>
                         Details
                     </a>

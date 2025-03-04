@@ -12,10 +12,10 @@
 
 @if (Model.Count == 0 || Model is null)
 {
-    <div class="card m-3" style="max-width: 1000px;background-color:#000000; color:#ffffff">
+    <div class="card m-3" style="max-width: 1000px;background-color:#ffffff; color:#000000">
         <div class="row g-0">
-            <div class="col-md-8" style="background-color:#000000; color:#ffffff">
-                <div class="card-body" style="background-color:#000000; color:#ffffff">
+            <div class="col-md-8" style="background-color:#ffffff; color:#000000">
+                <div class="card-body" style="background-color:#ffffff; color:#000000">
                     <h5 class="card-title"> "This Shoe doesn't has a size associated, please go back to the menú"</h5>
                     <a href="@(ViewBag.ReturnUrl??Url.Action("Index","Home",new{Areas="Customer"}))" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Go back to menu</a> @*Cuando indicas el area debe estar igual que en el Explorador de Soluciones*@
                 </div>

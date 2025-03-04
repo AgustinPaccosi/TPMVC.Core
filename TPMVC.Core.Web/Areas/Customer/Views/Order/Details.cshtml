@@ -8,7 +8,7 @@
         return date.ToShortDateString();
     }
 }
-<div style="color:#ffffff">
+<div style="color:#000000">
     <h4>Orders Details</h4>
     <hr />
     <dl class="row">
@@ -35,7 +35,7 @@
 <div>
     @if (User.IsInRole(WC.Role_Admin))
     {
-        <a asp-area="Admin" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.ApplicationUserId" class="btn btn-success btn-sm">
+        <a asp-area="Admin" asp-controller="ApplicationUser" asp-action="Details" asp-route-id="@Model.ApplicationUserId" class="btn btn-success btn-sm">
             <i class="bi bi-backspace"></i>&nbsp;
             Back to List
         </a>
@@ -50,7 +50,7 @@
 
     }
 </div>
-<table class="table table-bordered table-hover mt-3" style="color:#ffffff">
+<table class="table table-bordered mt-3" style="color:#000888">
     <thead>
         <tr>
             <th style="width:20%">Description</th>

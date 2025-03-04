@@ -120,12 +120,12 @@
 							<h4 class="d-flex justify-content-between align-items-center mb-3">
 								<span class="text-info">Order Summary:</span>
 							</h4>
-							<ul class="list-group mb-3" style="background-color:#000000;color:#ffffff">
+							<ul class="list-group mb-3" style="background-color:#ffffff;color:#000000">
 								@foreach (var item in Model.ShoppingCarts!)
 								{
 									price = (item.Quantity == 1 ? item.ShoeSize.Shoe!.Price : item.ShoeSize.Shoe!.Price * 0.9m);
 
-									<li class="list-group-item d-flex justify-content-between" style="background-color:#000000;color:#ffffff">
+									<li class="list-group-item d-flex justify-content-between" style="background-color:#ffffff;color:#000000">
 										<div>
 											<h6 class="my-0">@item.ShoeSize.Shoe.Model</h6>
 											<h6 class="my-0">@item.ShoeSize.Shoe.Description</h6>
@@ -137,7 +137,7 @@
 
 								}
 
-								<li class="list-group-item d-flex justify-content-between bg-light" style="background-color:#000000;color:#ffffff">
+								<li class="list-group-item d-flex justify-content-between bg-light" style="background-color:#ffffff;color:#000000">
 									<small class="text-info">Total (USD)</small>
 									<strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("en-Us"))</strong>
 								</li>

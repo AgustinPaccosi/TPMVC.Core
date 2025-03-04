@@ -72,11 +72,11 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">Mis Compras</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
-                                    <i class="bi bi-basket2-fill" style="color:black">Carro</i>
+                                    <i class="bi bi-basket2-fill" style="color:black">Carrito</i>
                                 </a>
                             </li>
                         }
