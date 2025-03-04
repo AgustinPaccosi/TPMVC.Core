@@ -55,11 +55,11 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
                     .ToPagedList(pageNumber, pageSize);
             return View(usersVm);
         }
-        //public IActionResult Details(string id)
-        //{
-        //    var applicationUser = _usersService!.Get(filter: o => o.Id == id,
-        //        propertiesNames: "Country,State,City,OrderHeaders");
-        //    return View(applicationUser);
-        //}
+        public IActionResult Details(string id)
+        {
+            var applicationUser = _usersService!.Get(filter: o => o.Id == id,
+                propertiesNames: "Country,State,City,OrderHeaders");
+            return View(applicationUser);
+        }
     }
 }

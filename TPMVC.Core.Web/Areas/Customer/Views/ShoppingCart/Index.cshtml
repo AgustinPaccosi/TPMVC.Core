@@ -21,7 +21,7 @@
         </div>
         @if (Model.ShoppingCarts!.Any()) //Verifico si tengo productos en mi lista de ShoppingCarts
         {
-            <div class="card-body 8" style="background-color:#000000; color:#ffffff">
+            <div class="card-body 8" style="background-color:#ffffff; color:#000000">
                 <div class="row mb-3 pb-3">
                     <div class="col-md-2 offset-md-1">
                         <a href="@(ViewBag.ReturnUrl??Url.Action("Index","Home"))" class="btn btn-outline-primary text-uppercase mb-5 btn-sm"><small>Continue Shopping</small></a> @*Le indico la Url que debe seguir*@
@@ -74,7 +74,7 @@
                         }
                     </div>
                 </div>
-                <div class="card-footer border-0" style="background-color:#000000; color:#ffffff">
+                <div class="card-footer border-0" style="background-color:#ffffff; color:#000000">
                     <div class="row">
                         <div class="col-md-4 offset-md-4">
                             <ul class="list-group mb-4">
@@ -95,7 +95,7 @@
         }
         else
         {
-            <div class="alert alert-danger" style="background-color:#000000; color:#ffffff">
+            <div class="alert alert-danger" style="background-color:#ffffff; color:#000000">
                 <div class="text-danger text-center fs-3">
                     Shopping Cart is empty!!!
                 </div>

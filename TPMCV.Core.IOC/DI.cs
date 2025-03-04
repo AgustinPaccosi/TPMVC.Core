@@ -46,6 +46,10 @@ namespace TPMCV.Core.IOC
 
             servicios.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
+            servicios.AddScoped<IOrderHeadersRepository, OrderHeadersRepository>();
+
+            servicios.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+
             servicios.AddScoped<IShoppingCartsRepository, ShoppingCartsRepository>();
 
 
@@ -75,6 +79,8 @@ namespace TPMCV.Core.IOC
             servicios.AddScoped<IApplicationUserService, ApplicationUserService>();
 
             servicios.AddScoped<IShoppingCartService, ShoppingCartService>();
+
+            servicios.AddScoped<IOrderHeadersService, OrderHeadersService>();
 
 
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();

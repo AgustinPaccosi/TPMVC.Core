@@ -14,19 +14,31 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using TPMVC.Core.Utilities;
 
 namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        //private readonly SignInManager<IdentityUser> _signInManager;
+        //private readonly ILogger<LoginModel> _logger;
+
+        //public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        //{
+        //    _signInManager = signInManager;
+        //    _logger = logger;
+        //}
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -103,6 +115,7 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -115,6 +128,14 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    // Verificar si el usuario tiene el rol de Admin
+                    if (await _userManager.IsInRoleAsync(user, WC.Role_Admin))
+                    {
+                        // Redirigir al Index del controlador Home de admin si es admin
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -135,6 +156,38 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+            //returnUrl ??= Url.Content("~/");
+
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            //if (ModelState.IsValid)
+            //{
+            //    // This doesn't count login failures towards account lockout
+            //    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            //    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+            //    if (result.Succeeded)
+            //    {
+            //        _logger.LogInformation("User logged in.");
+            //        return LocalRedirect(returnUrl);
+            //    }
+            //    if (result.RequiresTwoFactor)
+            //    {
+            //        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+            //    }
+            //    if (result.IsLockedOut)
+            //    {
+            //        _logger.LogWarning("User account locked out.");
+            //        return RedirectToPage("./Lockout");
+            //    }
+            //    else
+            //    {
+            //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            //        return Page();
+            //    }
+            //}
+
+            // If we got this far, something failed, redisplay form
+            //return Page();
         }
     }
 }

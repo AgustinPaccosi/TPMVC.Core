@@ -50,7 +50,7 @@ namespace TPMVC.Core.Web.Mappings
 
             CreateMap<ShoppingCart, OrderDetail>()
                 .ForMember(dest => dest.OrderHeaderId, opt => opt.Ignore())
-                .ForMember(dest => dest.ShoeSizes, opt => opt.Ignore())
+                .ForMember(dest => dest.ShoeSizes, opt => opt.MapFrom(src=>src.ShoeSize))//Ignore())
                 .ForMember(dest => dest.ShoeSizeId, opt => opt.MapFrom(src => src.ShoeSizeId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (src.Quantity == 1 ? src.ShoeSize.Shoe.Price : src.ShoeSize.Shoe.Price * 0.9M)));

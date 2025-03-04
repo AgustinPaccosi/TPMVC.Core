@@ -36,6 +36,10 @@ namespace TPMVC.Core.Data
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts {get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+
+
 
 
 
@@ -338,9 +342,19 @@ namespace TPMVC.Core.Data
                 //entity.HasOne(ss => ss.Country).WithMany(s => s.Cities).HasForeignKey(sc => sc.CountryId);
                 //entity.HasOne(ss => ss.States).WithMany(s => s.Cities).HasForeignKey(sc => sc.StateId);
             });
+            modelBuilder.Entity<ApplicationUser>()
+            .HasMany(au => au.OrderHeaders)
+            .WithOne(oh => oh.ApplicationUser)
+            .HasForeignKey(oh => oh.ApplicationUserId);
+
+            modelBuilder.Entity<OrderDetail>()
+                         .HasOne(od => od.ShoeSizes)
+                         .WithMany()
+                         .HasForeignKey(od => od.ShoeSizeId);
+
+
+            
 
         }
-
-
     }
 }
