@@ -345,10 +345,10 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            //List<ShoeSize> listaDeSizes = new List<ShoeSize>();
-            //listaDeSizes = _service!.GetAllShoesSizes(shoe.ShoeId);
-            //foreach (var item in listaDeSizes)
-            //{
+            List<ShoeSize> listaDeSizes = new List<ShoeSize>();
+            listaDeSizes = _service!.GetAllShoesSizes(shoe.ShoeId);
+            foreach (var item in listaDeSizes)
+            {
                 if (_service?.EstaRelacionado(shoe.ShoeId) ?? true)
                 {
                     return Json(new
@@ -357,8 +357,8 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
                         message = "Related Record..."
                     });
                 }
-                
-            //}
+
+            }
             if (shoe.imageURL != null)
             {
                 string? webroot = webHostEnviroment!.WebRootPath;
