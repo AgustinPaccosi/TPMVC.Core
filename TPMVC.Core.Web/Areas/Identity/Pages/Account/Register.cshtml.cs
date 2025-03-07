@@ -102,7 +102,7 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(70, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -116,17 +116,17 @@ namespace TPMVC.Core.Web.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
             [Required(ErrorMessage = "{0} is required")]
-            [StringLength(100, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [StringLength(50, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
             [DisplayName("First Name")]
             public string FirstName { get; set; } = null!;
 
             [Required(ErrorMessage = "{0} is required")]
-            [StringLength(100, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [StringLength(50, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
             [DisplayName("Last Name")]
             public string LastName { get; set; } = null!;
 
             [Required(ErrorMessage = "{0} is required")]
-            [StringLength(200, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
+            [StringLength(50, ErrorMessage = "{0} must have between {2} and {1} characters", MinimumLength = 3)]
             public string Address { get; set; } = null!;
 
             [MaxLength(20, ErrorMessage = "{0} must have at least {1} characters")]

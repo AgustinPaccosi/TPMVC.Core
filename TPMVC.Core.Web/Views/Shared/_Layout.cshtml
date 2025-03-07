@@ -23,11 +23,11 @@
 
                 @if (User.IsInRole(WC.Role_Admin))
                 {
-                    <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">TPMVC.Core.Web</a>
+                    <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">TPMVC CORE</a>
                 }
                 else
                 {
-                    <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">TPMVC.Core.Web</a>
+                    <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">TPMVC CORE</a>
                 }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -38,51 +38,131 @@
 
                         @if (User.IsInRole(WC.Role_Admin))
                         {
+
+                            @* @if (User.IsInRole(WC.Role_Admin))
+                        { *@
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Brands" asp-action="Index">Marcas</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Brands" asp-action="Index">
+                                    <i class="bi bi-card-list me-2"></i> Marcas
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sports" asp-action="Index">Deportes</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Sports" asp-action="Index">
+                                    <i class="bi bi-bicycle me-2"></i> Deportes
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Genres" asp-action="Index">Generos</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Genres" asp-action="Index">
+                                    <i class="bi bi-music-note me-2"></i> Generos
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Shoes" asp-action="Index">Zapatos</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Shoes" asp-action="Index">
+                                    <i class="bi bi-shoe-prints me-2"></i> Zapatos
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Colours" asp-action="Index">Colores</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Colours" asp-action="Index">
+                                    <i class="bi bi-palette me-2"></i> Colores
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Country" asp-action="Index">Paises</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Country" asp-action="Index">
+                                    <i class="bi bi-globe me-2"></i> Paises
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sizes" asp-action="Index">Talles</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Sizes" asp-action="Index">
+                                    <i class="bi bi-rulers me-2"></i> Talles
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="States" asp-action="Index">Provincias</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="States" asp-action="Index">
+                                    <i class="bi bi-geo-alt me-2"></i> Provincias
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cities" asp-action="Index">Ciudades</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="Cities" asp-action="Index">
+                                    <i class="bi bi-house-door me-2"></i> Ciudades
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Usuarios</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">
+                                    <i class="bi bi-person-circle me-2"></i> Usuarios
+                                </a>
                             </li>
+                            @* <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Brands" asp-action="Index">Marcas</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sports" asp-action="Index">Deportes</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Genres" asp-action="Index">Generos</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Shoes" asp-action="Index">Zapatos</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Colours" asp-action="Index">Colores</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Country" asp-action="Index">Paises</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Sizes" asp-action="Index">Talles</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="States" asp-action="Index">Provincias</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cities" asp-action="Index">Ciudades</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Usuarios</a>
+                        </li> *@
                         }
                         else
                         {
+                            @* <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">Mis Compras</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
+                        <i class="bi bi-basket2-fill" style="color:black">Carrito</i>
+                        </a>
+                        </li> *@
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">Mis Compras</a>
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Customer" asp-controller="Order" asp-action="Index">
+                                    <i class="bi bi-person-circle me-2"></i> Mis Compras
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
-                                    <i class="bi bi-basket2-fill" style="color:black">Carrito</i>
+                                <a class="nav-link text-dark d-flex align-items-center" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
+                                    <i class="bi bi-basket2-fill me-2"></i> Carrito
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Customer" asp-controller="Home" asp-action="Privacy">
+                                    <i class="bi bi-shield-lock me-2"></i> Privacy
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house-door me-2"></i> Home
                                 </a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        @* <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark d-flex align-items-center">
+                        <i class="bi bi-house-door me-2"></i> Home
+                        </a>
+                        </div> *@
+                        
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

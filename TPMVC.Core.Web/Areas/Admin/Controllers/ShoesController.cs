@@ -202,6 +202,7 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
                 shoe.Brand = brand;
                 shoe.Genre = genre;
                 shoe.Sport = sport;
+                shoe.Active= true;
                 if (shoe == null)
                 {
                     ModelState.AddModelError(string.Empty, "No Shoe has been supplied");

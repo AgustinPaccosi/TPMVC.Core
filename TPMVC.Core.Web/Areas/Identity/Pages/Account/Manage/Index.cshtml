@@ -21,7 +21,16 @@
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+            <a class="btn btn-outline-success mt-3" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-backspace"></i>
+                Back
+            </a>
+@*             <a class="btn btn-outline-success" asp-action="Index" asp-controller="Home">
+                <i class="bi bi-backspace"></i>
+                Back
+            </a>
+
+ *@        </form>
     </div>
 </div>
 
