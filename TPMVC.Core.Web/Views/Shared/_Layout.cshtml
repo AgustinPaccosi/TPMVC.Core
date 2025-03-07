@@ -27,7 +27,7 @@
                 }
                 else
                 {
-                    <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">TPMVC CORE</a>
+                    <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Hero">TPMVC CORE</a>
                 }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -122,24 +122,21 @@
                         <a class="nav-link text-dark" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Usuarios</a>
                         </li> *@
                         }
+                        
                         else
                         {
-                            @* <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">Mis Compras</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
-                        <i class="bi bi-basket2-fill" style="color:black">Carrito</i>
-                        </a>
-                        </li> *@
+                             if (User.IsInRole(WC.Role_Customer))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark d-flex align-items-center" href="@Url.Action("Index","ShoppingCart",new{ area = "Customer", returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
+                                        <i class="bi bi-basket2-fill me-2"></i> Shopping Cart
+                                    </a>
+                                </li>
+                                
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark d-flex align-items-center" asp-area="Customer" asp-controller="Order" asp-action="Index">
-                                    <i class="bi bi-person-circle me-2"></i> Mis Compras
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark d-flex align-items-center" href="@Url.Action("Index","ShoppingCart",new{returnUrl=Url.Action("Index","Home",new{page=ViewBag.currentPage})})" style="color:black">
-                                    <i class="bi bi-basket2-fill me-2"></i> Carrito
+                                    <i class="bi bi-person-circle me-2"></i> My Purchase
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -153,14 +150,6 @@
                                 </a>
                             </li>
                         }
-                        @* <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark d-flex align-items-center">
-                        <i class="bi bi-house-door me-2"></i> Home
-                        </a>
-                        </div> *@
                         
 
                     </ul>

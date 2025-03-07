@@ -83,12 +83,16 @@
                     <div class="row justify-content-center">
 
                         <!-- Botón Continue Shopping -->
+                        @* <div class="col-md-3 text-center">
+                            <a href="@(ViewBag.ReturnUrl??Url.Action("Index","Home", new { area = "Customer" }))" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
+                                Continue Shopping
+                            </a>
+                        </div> *@
                         <div class="col-md-3 text-center">
-                            <a href="@(ViewBag.ReturnUrl??Url.Action("Index","Home"))" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
+                            <a href="@(!ViewBag.ReturnUrl.Contains("/Customer/") ? Url.Action("Index", "Home", new { area = "Customer" }) : Url.Content(ViewBag.ReturnUrl))" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
                                 Continue Shopping
                             </a>
                         </div>
-
 
                         <!-- Botón Summary -->
                         <div class="col-md-3 text-center">
