@@ -1,18 +1,49 @@
-﻿
-@* ﻿<div class="text-secondary px-4 py-5 text-center mt-5" style="background-color:#fffff1">
-    <div class="py-5">
-        <img class="d-block mx-auto mb-2" src="/Images/imagen1.png" style="height:400px; width:500px; object-fit:contain; border: double #ffffff; border-width: 8px;" />
-        <h1 class="display-5 fw-bold text-white">Welcome Dear Customer</h1>
-        <div class="col-lg-6 mx-auto">
-            <p class="fs-5 mb-4">Hermosa Imagen realizada con INTELIGENCIA ARTIFICIAL</p>
+﻿@* <div class="text-secondary px-4 py-5 text-center mt-5" style="background-color:#f0f8ff; background-image: url('/Images/imagen1.png'); background-size: cover; background-position: center; position: relative;">
+    <div class="py-5" style="position: relative; z-index: 2;">
+        <img class="d-block mx-auto mb-3" src="/Images/imagen1.png" style="height:400px; width:500px; object-fit:cover; border-radius:15px; border: 4px solid #ffffff; position: relative; z-index: 3;" />
+        <h1 class="display-5 fw-bold text-dark" style="z-index: 3;">Welcome Dear Customer</h1>
+        <div class="col-lg-6 mx-auto" style="z-index: 3;">
+            <p class="fs-4 mb-4 text-muted">A Beautiful Image Crafted with Artificial Intelligence</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-info">Enter</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-lg">Enter</a>
             </div>
         </div>
     </div>
-</div>  *@
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/Images/imagen1.png'); background-size: cover; background-position: center; filter: blur(8px); z-index: 1;"></div>
+</div> *@
 
-<div class="text-secondary px-4 py-5 text-center mt-5" style="background-color:#f0f8ff;">
+<div class="text-secondary px-4 py-5 text-center mt-5" style="background-color:#f0f8ff; background-image: url('/Images/imagen1.png'); background-size: cover; background-position: center; position: relative;">
+    <div class="py-5" style="position: relative; z-index: 2;">
+        <img class="d-block mx-auto mb-3" src="/Images/imagen1.png" style="height:400px; width:500px; object-fit:cover; border-radius:15px; border: 4px solid #ffffff; position: relative; z-index: 3;" />
+        <h1 class="display-5 fw-bold text-white" style="z-index: 3;">Welcome Dear Customer</h1>
+        <div class="col-lg-6 mx-auto" style="z-index: 3;">
+            <p class="fs-4 mb-4 text-white">A Beautiful Image Crafted with Artificial Intelligence</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg text-white fw-bold" style="transition: background-color 0.3s ease; color 0.3s ease; border-radius: 50px;">
+                    Enter
+                </a>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/Images/imagen1.png'); background-size: cover; background-position: center; filter: blur(8px); z-index: 1;"></div>
+</div>
+
+<!-- Estilo para el hover del botón -->
+<style>
+    .btn-primary {
+        background-color: #007bff; /* Azul */
+        border-color: #007bff;
+        color: white; /* Letras blancas por defecto */
+    }
+
+    .btn-primary:hover {
+            color: #000000;
+            /* background-color: #ffffff; /* Blanco al pasar el mouse */ */
+         /* Texto negro */
+    }
+</style>
+
+@* <div class="text-secondary px-4 py-5 text-center mt-5" style="background-color:#f0f8ff;">
     <div class="py-5">
         <img class="d-block mx-auto mb-3" src="/Images/imagen1.png" style="height:400px; width:500px; object-fit:cover; border-radius:15px; border: 4px solid #ffffff;" />
         <h1 class="display-5 fw-bold text-dark">Welcome Dear Customer</h1>
@@ -23,4 +54,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@

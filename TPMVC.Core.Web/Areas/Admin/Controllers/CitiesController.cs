@@ -80,8 +80,8 @@ namespace TPMVC.Core.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    City? city = _services!.Get(c => c.CityId == id.Value,
-                        propertiesNames: "Country,State");
+                    City? city = _services!.Get(c => c.CityId == id.Value);//,
+                        //propertiesNames: "Country,State");
                     if (city == null)
                     {
                         return NotFound();

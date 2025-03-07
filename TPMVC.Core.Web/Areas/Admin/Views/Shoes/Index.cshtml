@@ -106,7 +106,7 @@
                             <a class="btn btn-warning" asp-controller="Shoes" asp-action="UpSert" asp-route-id="@item.ShoeId">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
-                            <a onclick="Delete('/Shoes/Delete/@item.ShoeId',@item.ShoeId,'@item.Model')" class="btn btn-danger">
+                            <a onclick="Delete('/Admin/Shoes/Delete/@item.ShoeId',@item.ShoeId,'@item.Model')" class="btn btn-danger">
                                 <i class="bi bi-trash-fill"></i> Borrar
                             </a>
                             <a asp-controller="Shoes" asp-action="AddSize" asp-route-id="@item.ShoeId" class="btn btn-info">
